@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections;
+using DG.Tweening;
 using Entities.Events;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -29,10 +30,20 @@ namespace Entities.Gameplay
             Right = 2
         }
         
+        [SerializeField]
+        private Transform _playerTransform;
+        [SerializeField]
+        private Transform _LeftLaneTransform;
+        [SerializeField]
+        private Transform _MiddleLaneTransform;
+        [SerializeField]
+        private Transform _RightLaneTransform;
+
         [SerializeField] 
         private PlayerMovementSettings _MovementSettings;
 
         private Lane _lane = Lane.Middle;
+        private Transform _currentLaneTransform;
         
         private Vector2 _downPosition;
         private Vector2 _upPosition;
@@ -71,10 +82,10 @@ namespace Entities.Gameplay
         private Quadrant GetQuadrant(Vector2 swipeVector)
         {
             if (swipeVector.sqrMagnitude == 0) return Quadrant.Undefined;
-            if (Mathf.Abs(swipeVector.x) < Mathf.Abs(swipeVector.y))
+            if (Mathf.Abs(swipeVector.x) > Mathf.Abs(swipeVector.y))
                 return swipeVector.x < 0 ? Quadrant.West : Quadrant.East;
             
-            return swipeVector.y < 0 ? Quadrant.North : Quadrant.South;
+            return swipeVector.y > 0 ? Quadrant.North : Quadrant.South;
         }
 
         private void HandleMovement(Quadrant quadrant)
@@ -103,9 +114,11 @@ namespace Entities.Gameplay
                         return;
                     case Lane.Middle:
                         _lane = Lane.Left;
+                        _currentLaneTransform = _LeftLaneTransform;
                         break;
                     case Lane.Right:
                         _lane = Lane.Middle;
+                        _currentLaneTransform = _MiddleLaneTransform;
                         break;
                 }
                 LaneChangedSignal.Dispatch(_lane);
@@ -120,9 +133,11 @@ namespace Entities.Gameplay
                         return;
                     case Lane.Middle:
                         _lane = Lane.Right;
+                        _currentLaneTransform = _RightLaneTransform;
                         break;
                     case Lane.Left:
                         _lane = Lane.Middle;
+                        _currentLaneTransform = _MiddleLaneTransform;
                         break;
                 }
                 LaneChangedSignal.Dispatch(_lane);
@@ -142,13 +157,17 @@ namespace Entities.Gameplay
 
         private IEnumerator MoveRoutine()
         {
-            yield return new WaitForSeconds(_MovementSettings.MoveDuration);
+            //yield return new WaitForSeconds(_MovementSettings.MoveDuration);
+            _playerTransform.DOMove(_currentLaneTransform.position, _MovementSettings.MoveDuration).SetEase(Ease.InOutBack);
+
             _moveRoutine = null;
+            yield break;
         }
 
         private IEnumerator JumpRoutine()
         {
             yield return new WaitForSeconds(_MovementSettings.JumpDuration);
+            _playerTransform.DOJump(_playerTransform.position, 100, 1, _MovementSettings.JumpDuration);
             _jumpRoutine = null;
         }
 

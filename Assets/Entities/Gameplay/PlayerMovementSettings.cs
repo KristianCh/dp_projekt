@@ -23,17 +23,17 @@ namespace Entities.Gameplay
         [SerializeField]
         private float _MinSwipeDistance = 0.5f;
 
-        [SerializeReference]
-        private TimeSpan _MinSwipeTime = new(0, 0, 0, 0, 10);
+        [SerializeField]
+        private float _MinSwipeTimeSeconds = 0.1f;
 
-        [SerializeReference]
-        private TimeSpan _MaxSwipeTime = new(0, 0, 0, 5, 0);
+        [SerializeField]
+        private float _MaxSwipeTimeSeconds = 5f;
         
         public float JumpDuration => _JumpDuration;
         public float SlideDuration => _SlideDuration;
         public float MoveDuration => _MoveDuration;
         public float MinSwipeDistance => _MinSwipeDistance;
-        public TimeSpan MinSwipeTime => _MinSwipeTime;
-        public TimeSpan MaxSwipeTime => _MaxSwipeTime;
+        public TimeSpan MinSwipeTime => TimeSpan.FromSeconds(_MinSwipeTimeSeconds);
+        public TimeSpan MaxSwipeTime => TimeSpan.FromSeconds(_MaxSwipeTimeSeconds);
     }
 }
