@@ -5,6 +5,7 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Entities.Gameplay
 {
@@ -29,10 +30,15 @@ namespace Entities.Gameplay
         [SerializeField]
         private float _MaxSwipeTimeSeconds = 5f;
         
+        [SerializeField]
+        private float _JumpHeight = 10f;
+        
         public float JumpDuration => _JumpDuration;
         public float SlideDuration => _SlideDuration;
         public float MoveDuration => _MoveDuration;
         public float MinSwipeDistance => _MinSwipeDistance;
+        public float JumpHeight => _JumpHeight;
+        
         public TimeSpan MinSwipeTime => TimeSpan.FromSeconds(_MinSwipeTimeSeconds);
         public TimeSpan MaxSwipeTime => TimeSpan.FromSeconds(_MaxSwipeTimeSeconds);
     }

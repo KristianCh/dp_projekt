@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using DG.Tweening;
 using Entities.Events;
+using Entities.Utils;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -108,6 +109,7 @@ namespace Entities.Gameplay
 
             void GoLeft()
             {
+                if (_moveRoutine != null) return;
                 switch (_lane)
                 {
                     case Lane.Left:
@@ -127,6 +129,7 @@ namespace Entities.Gameplay
 
             void GoRight()
             {
+                if (_moveRoutine != null) return;
                 switch (_lane)
                 {
                     case Lane.Right:
@@ -146,6 +149,7 @@ namespace Entities.Gameplay
 
             void Jump()
             {
+                if (_jumpRoutine != null) return;
                 _jumpRoutine = StartCoroutine(JumpRoutine());
             }
 
@@ -158,7 +162,7 @@ namespace Entities.Gameplay
         private IEnumerator MoveRoutine()
         {
             //yield return new WaitForSeconds(_MovementSettings.MoveDuration);
-            _playerTransform.DOMove(_currentLaneTransform.position, _MovementSettings.MoveDuration).SetEase(Ease.InOutBack);
+            _playerTransform.DOMoveX(_currentLaneTransform.position.x, _MovementSettings.MoveDuration).SetEase(Ease.InOutBack);
 
             _moveRoutine = null;
             yield break;
@@ -166,8 +170,22 @@ namespace Entities.Gameplay
 
         private IEnumerator JumpRoutine()
         {
-            yield return new WaitForSeconds(_MovementSettings.JumpDuration);
-            _playerTransform.DOJump(_playerTransform.position, 100, 1, _MovementSettings.JumpDuration);
+            //yield return new WaitForSeconds(_MovementSettings.JumpDuration);
+            var elapsedTime = 0f;
+            var baseY = _playerTransform.position.y;
+            while (elapsedTime < _MovementSettings.JumpDuration)
+            { 
+                var progress = elapsedTime / _MovementSettings.JumpDuration;
+                var tweenValue = 0f;
+                if (progress < 0.5f) tweenValue = DOVirtual.EasedValue(0, 1, progress * 2f, Ease.OutCirc);
+                else tweenValue = DOVirtual.EasedValue(1, 0, (progress - 0.5f) * 2f, Ease.InCirc);
+                if (float.IsNaN(tweenValue)) Debug.LogError("Progress is NaN");
+                _playerTransform.position = _playerTransform.position.WithY(baseY + tweenValue * _MovementSettings.JumpHeight);
+                yield return new WaitForEndOfFrame();
+                elapsedTime += Time.deltaTime;
+            }
+
+            _playerTransform.position = _playerTransform.position.WithY(baseY);
             _jumpRoutine = null;
         }
 

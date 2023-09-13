@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bd1feeb7b7643fd8079ded21d035ddd, type: 3}
   m_Name: PlayerMovementSettings
   m_EditorClassIdentifier: 
-  _JumpDuration: 1
+  _JumpDuration: 0.5
   _SlideDuration: 1
   _MoveDuration: 1
   _MinSwipeDistance: 0.5
+  _MinSwipeTimeSeconds: 0.1
+  _MaxSwipeTimeSeconds: 5
+  _JumpHeight: 100
