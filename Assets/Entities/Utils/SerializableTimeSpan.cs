@@ -4,12 +4,14 @@ using System.Globalization;
 using System.Runtime.Serialization;
 using JetBrains.Annotations;
 using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor;
 using Sirenix.Utilities;
-using Sirenix.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
+#if UNITY_EDITOR
+using Sirenix.Utilities.Editor;
+using Sirenix.OdinInspector.Editor;
+#endif
 
 namespace Entities.Utils
 {

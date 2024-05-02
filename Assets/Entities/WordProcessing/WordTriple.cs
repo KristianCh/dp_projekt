@@ -1,21 +1,19 @@
-﻿// Author: Kristián Chovančák
-// Created: 04.10.2023
-// Copyright (c) Noxgames
-// http://www.noxgames.com/
-
-namespace Entities.WordProcessing
+﻿namespace Entities.WordProcessing
 {
     public class WordTriple
     {
-        public string PairWordA { get; set; }
-        public string PairWordB { get; set; }
+        public string MainWord { get; set; }
+        public string PairWord { get; set; }
         public string IncorrectWord { get; set; }
+        
+        public float WordAOA { get; set; }
 
-        public WordTriple(string pairWordA, string pairWordB, string incorrectWord)
+        public WordTriple(string mainWord, string pairWord, string incorrectWord, float wordAOA)
         {
-            PairWordA = pairWordA;
-            PairWordB = pairWordB;
+            MainWord = mainWord;
+            PairWord = pairWord;
             IncorrectWord = incorrectWord;
+            WordAOA = wordAOA;
         }
     }
 }

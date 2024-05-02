@@ -1,11 +1,6 @@
-﻿// Author: Kristián Chovančák
-// Created: 07.08.2023
-// Copyright (c) Noxgames
-// http://www.noxgames.com/
-
-using System;
+﻿using System;
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Entities.Gameplay
 {
@@ -32,6 +27,11 @@ namespace Entities.Gameplay
         
         [SerializeField]
         private float _JumpHeight = 10f;
+
+        [SerializeField]
+        private Ease _MoveEase = Ease.InOutCubic;
+        
+        
         
         public float JumpDuration => _JumpDuration;
         public float SlideDuration => _SlideDuration;
@@ -41,5 +41,7 @@ namespace Entities.Gameplay
         
         public TimeSpan MinSwipeTime => TimeSpan.FromSeconds(_MinSwipeTimeSeconds);
         public TimeSpan MaxSwipeTime => TimeSpan.FromSeconds(_MaxSwipeTimeSeconds);
+
+        public Ease MoveEase => _MoveEase;
     }
 }

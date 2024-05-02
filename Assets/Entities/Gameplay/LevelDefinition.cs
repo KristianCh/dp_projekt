@@ -1,25 +1,20 @@
-﻿// Author: Kristián Chovančák
-// Created: 15.10.2023
-// Copyright (c) Noxgames
-// http://www.noxgames.com/
-
-using System;
+﻿using System;
 using Entities.Utils;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Entities.Gameplay
 {
-    [CreateAssetMenu(fileName = "FILENAME", menuName = "MENUNAME", order = 0)]
+    [CreateAssetMenu(fileName = "LevelDefinition", menuName = "LevelDefinition", order = 0)]
     public class LevelDefinition : ScriptableObject
     {
         [SerializeField]
         [ValidateInput("ValidateSpeed", "Start speed must be less or equal to max")]
-        private float _StartSpeed = 10f;
+        private float _StartSpeed = 1f;
         
         [SerializeField]
         [ValidateInput("ValidateSpeed", "Start speed must be less or equal to max")]
-        private float _MaxSpeed = 20f;
+        private float _MaxSpeed = 3f;
         
         [SerializeField]
         private SerializableTimeSpan _SpeedupStartTime = new SerializableTimeSpan(0, 0, 30);

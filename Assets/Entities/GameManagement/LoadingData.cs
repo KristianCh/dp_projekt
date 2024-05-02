@@ -1,9 +1,4 @@
-﻿// // Author: Kristián Chovančák
-// // Created: 21.07.2023
-// // Copyright (c) Noxgames
-// // http://www.noxgames.com/
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Entities.GameManagement

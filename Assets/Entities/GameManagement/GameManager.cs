@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Entities.Events;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Entities.GameManagement
@@ -17,12 +19,27 @@ namespace Entities.GameManagement
         public Signal LoadCompletedSignal { get; } = new();
         
         private readonly Dictionary<System.Type, object> _services = new Dictionary<System.Type, object>();
-        private static GameManager Instance;
 
-        public void Start()
+        private static GameManager Instance;
+        
+        public void Awake()
         {
+            DontDestroyOnLoad(gameObject);
+            
             Instance = this;
             ApplicationStartedSignal.Dispatch();
+
+            if (!PlayerPrefs.HasKey("PlayerGUID"))
+            {
+                var guid = Guid.NewGuid().ToString();
+                PlayerPrefs.SetString("PlayerGUID", guid);
+            }
+
+            if (!PlayerPrefs.HasKey("Color"))
+            {
+                PlayerPrefs.SetString("Color", "white");
+            }
+            PlayerPrefs.Save();
         }
 
         public static T GetService<T>() where T : class, IService

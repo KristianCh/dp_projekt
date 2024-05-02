@@ -1,13 +1,9 @@
-﻿// Author: Kristián Chovančák
-// Created: 07.08.2023
-// Copyright (c) Noxgames
-// http://www.noxgames.com/
-
-using System;
+﻿using System;
 using System.Collections;
 using DG.Tweening;
 using Entities.Events;
 using Entities.Utils;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -39,7 +35,14 @@ namespace Entities.Gameplay
         private Transform _MiddleLaneTransform;
         [SerializeField]
         private Transform _RightLaneTransform;
+        [SerializeField]
+        private Camera _Camera;
+        [SerializeField]
+        private ColliderEvents _ColliderEvents;
+        [SerializeField]
+        private MeshRenderer _MeshRenderer;
 
+        [InlineEditor]
         [SerializeField] 
         private PlayerMovementSettings _MovementSettings;
 
@@ -57,7 +60,20 @@ namespace Entities.Gameplay
         private Coroutine _moveRoutine;
         
         public Signal<Lane> LaneChangedSignal = new();
-        
+
+        private void Awake()
+        {
+            if (PlayerPrefs.HasKey("Color"))
+            {
+                _MeshRenderer.material.color = ColorMapper.ColorMap[PlayerPrefs.GetString("Color")];
+            }
+        }
+
+        private void Update()
+        {
+            _Camera.transform.localPosition = _Camera.transform.localPosition.WithX(_playerTransform.localPosition.x / 2f);
+        }
+
         public void OnPointerDown(PointerEventData eventData)
         {
             _downPosition = eventData.position;
@@ -162,7 +178,7 @@ namespace Entities.Gameplay
         private IEnumerator MoveRoutine()
         {
             //yield return new WaitForSeconds(_MovementSettings.MoveDuration);
-            _playerTransform.DOMoveX(_currentLaneTransform.position.x, _MovementSettings.MoveDuration).SetEase(Ease.InOutBack);
+            _playerTransform.DOMoveX(_currentLaneTransform.position.x, _MovementSettings.MoveDuration).SetEase(_MovementSettings.MoveEase);
 
             _moveRoutine = null;
             yield break;
@@ -177,8 +193,8 @@ namespace Entities.Gameplay
             { 
                 var progress = elapsedTime / _MovementSettings.JumpDuration;
                 var tweenValue = 0f;
-                if (progress < 0.5f) tweenValue = DOVirtual.EasedValue(0, 1, progress * 2f, Ease.OutCirc);
-                else tweenValue = DOVirtual.EasedValue(1, 0, (progress - 0.5f) * 2f, Ease.InCirc);
+                if (progress < 0.5f) tweenValue = DOVirtual.EasedValue(0, 1, progress * 2f, Ease.OutQuad);
+                else tweenValue = DOVirtual.EasedValue(1, 0, (progress - 0.5f) * 2f, Ease.InQuad);
                 if (float.IsNaN(tweenValue)) Debug.LogError("Progress is NaN");
                 _playerTransform.position = _playerTransform.position.WithY(baseY + tweenValue * _MovementSettings.JumpHeight);
                 yield return new WaitForEndOfFrame();
