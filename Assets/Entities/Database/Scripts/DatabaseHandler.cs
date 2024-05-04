@@ -29,6 +29,8 @@ public class DatabaseHandler : MonoBehaviour, IService
 	private SqlCommand cmd = null;
 	private SqlDataReader rdr = null;
 
+	private bool _playerExistsCache = false;
+
 	private MD5 _md5Hash;
 	private string ConString => "Server=" + _Host + "," + _Port + ";" +
 	                            "Database=" + _Database + ";" +
@@ -49,6 +51,7 @@ public class DatabaseHandler : MonoBehaviour, IService
 	}
 
 	private SqlCommand Cmd => cmd ??= Con.CreateCommand();
+	private bool PlayerExists => _playerExistsCache || CheckPlayerExists();
 
 	void Awake(){
 		GameManager.AddService(this);
@@ -81,7 +84,7 @@ public class DatabaseHandler : MonoBehaviour, IService
 		var cmdText =
 			$"INSERT INTO GameRatings VALUES ('{playerGuid}', {playerAge}, '{ratedWord}', '{answeredWord}', '{correctWord}', '{incorrectWord}', {wordAoA.ToString(CultureInfo.InvariantCulture)})";
 		Cmd.CommandText = cmdText;
-		Cmd.ExecuteNonQuery();
+		Cmd.ExecuteNonQueryAsync();
 	}
 
 	public void RecordManualRating(string ratedWord, float wordAoA, int playerRatedAge)
@@ -91,18 +94,19 @@ public class DatabaseHandler : MonoBehaviour, IService
 		var cmdText =
 			$"INSERT INTO ManualRatings VALUES ('{playerGuid}', '{ratedWord}', {playerAge}, {wordAoA.ToString(CultureInfo.InvariantCulture)}, {playerRatedAge})";
 		Cmd.CommandText = cmdText;
-		Cmd.ExecuteNonQuery();
+		Cmd.ExecuteNonQueryAsync();
 	}
 
-	public bool PlayerExists()
+	public bool CheckPlayerExists()
 	{
+		if (_playerExistsCache) return true;
 		var playerGuid = PlayerPrefs.GetString("PlayerGUID");
 		var cmdText = $"SELECT 1 FROM Players WHERE PlayerGUID='{playerGuid}';";
 		Cmd.CommandText = cmdText;
 		rdr = Cmd.ExecuteReader();
-		var exists = rdr.HasRows;
+		_playerExistsCache = rdr.HasRows;
 		rdr.Close();
-		return exists;
+		return _playerExistsCache;
 	}
 
 	public void RecordPlayerData()
@@ -112,12 +116,12 @@ public class DatabaseHandler : MonoBehaviour, IService
 		var highscore = PlayerPrefs.GetFloat("HighScore");
 		var cmdText = $"INSERT INTO Players VALUES ('{playerGuid}', '{nickname}', {highscore.ToString(CultureInfo.InvariantCulture)})";
 
-		if (PlayerExists())
+		if (PlayerExists)
 		{
 			cmdText = $"UPDATE Players SET Nickname='{nickname}', Highscore={highscore.ToString(CultureInfo.InvariantCulture)} WHERE PlayerGUID='{playerGuid}'";
 		}
 		Cmd.CommandText = cmdText;
-		Cmd.ExecuteNonQuery();
+		Cmd.ExecuteNonQueryAsync();
 	}
 
 	public List<(string guid, string nick, float highscore)> GetTopPlayers()
