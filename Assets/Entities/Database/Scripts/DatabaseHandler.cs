@@ -30,30 +30,36 @@ public class DatabaseHandler : MonoBehaviour, IService
 	private SqlDataReader rdr = null;
 
 	private MD5 _md5Hash;
+	private string ConString => "Server=" + _Host + "," + _Port + ";" +
+	                            "Database=" + _Database + ";" +
+	                            "User ID=" + _UserId + ";" +
+	                            "Password=" + _Password + ";";
+
+	private SqlConnection Con {
+		get
+		{
+			if (con == null)
+			{
+				con = new SqlConnection(ConString);
+				con.Open();
+			}
+
+			return con;
+		}
+	}
+
+	private SqlCommand Cmd => cmd ??= Con.CreateCommand();
 
 	void Awake(){
 		GameManager.AddService(this);
 		DontDestroyOnLoad (gameObject);
-		
-		var conString = "Server=" + _Host + "," + _Port + ";" +
-		                "Database=" + _Database + ";" +
-		                "User ID=" + _UserId + ";" +
-		                "Password=" + _Password + ";";
-		
-		var result = "";
-
-		con = new SqlConnection(conString);
-		con.Open();
-		cmd = con.CreateCommand();
 
 		RecordPlayerData();
-		GetTopPlayers();
 			
-		Debug.Log(con.State);
-		Debug.Log(result);
+		Debug.Log(Con.State);
 		
 	}
-	private void onApplicationQuit(){
+	private void OnApplicationQuit(){
 		if (con != null) {
 			if (con.State.ToString () != "Closed") {
 				con.Close ();
@@ -74,8 +80,8 @@ public class DatabaseHandler : MonoBehaviour, IService
 		var playerAge = PlayerPrefs.GetInt("Age");
 		var cmdText =
 			$"INSERT INTO GameRatings VALUES ('{playerGuid}', {playerAge}, '{ratedWord}', '{answeredWord}', '{correctWord}', '{incorrectWord}', {wordAoA.ToString(CultureInfo.InvariantCulture)})";
-		cmd.CommandText = cmdText;
-		cmd.ExecuteNonQuery();
+		Cmd.CommandText = cmdText;
+		Cmd.ExecuteNonQuery();
 	}
 
 	public void RecordManualRating(string ratedWord, float wordAoA, int playerRatedAge)
@@ -84,16 +90,16 @@ public class DatabaseHandler : MonoBehaviour, IService
 		var playerAge = PlayerPrefs.GetInt("Age");
 		var cmdText =
 			$"INSERT INTO ManualRatings VALUES ('{playerGuid}', '{ratedWord}', {playerAge}, {wordAoA.ToString(CultureInfo.InvariantCulture)}, {playerRatedAge})";
-		cmd.CommandText = cmdText;
-		cmd.ExecuteNonQuery();
+		Cmd.CommandText = cmdText;
+		Cmd.ExecuteNonQuery();
 	}
 
 	public bool PlayerExists()
 	{
 		var playerGuid = PlayerPrefs.GetString("PlayerGUID");
 		var cmdText = $"SELECT 1 FROM Players WHERE PlayerGUID='{playerGuid}';";
-		cmd.CommandText = cmdText;
-		rdr = cmd.ExecuteReader();
+		Cmd.CommandText = cmdText;
+		rdr = Cmd.ExecuteReader();
 		var exists = rdr.HasRows;
 		rdr.Close();
 		return exists;
@@ -110,14 +116,14 @@ public class DatabaseHandler : MonoBehaviour, IService
 		{
 			cmdText = $"UPDATE Players SET Nickname='{nickname}', Highscore={highscore.ToString(CultureInfo.InvariantCulture)} WHERE PlayerGUID='{playerGuid}'";
 		}
-		cmd.CommandText = cmdText;
-		cmd.ExecuteNonQuery();
+		Cmd.CommandText = cmdText;
+		Cmd.ExecuteNonQuery();
 	}
 
 	public List<(string guid, string nick, float highscore)> GetTopPlayers()
 	{
-		cmd.CommandText = "SELECT TOP 10 * FROM Players ORDER BY Highscore DESC";
-		rdr = cmd.ExecuteReader();
+		Cmd.CommandText = "SELECT TOP 10 * FROM Players ORDER BY Highscore DESC";
+		rdr = Cmd.ExecuteReader();
 		
 		var players = new List<(string, string, float)>();
 
