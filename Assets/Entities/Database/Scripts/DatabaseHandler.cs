@@ -114,19 +114,20 @@ public class DatabaseHandler : MonoBehaviour, IService
 		cmd.ExecuteNonQuery();
 	}
 
-	public List<(string nick, float highscore)> GetTopPlayers()
+	public List<(string guid, string nick, float highscore)> GetTopPlayers()
 	{
 		cmd.CommandText = "SELECT TOP 10 * FROM Players ORDER BY Highscore DESC";
 		rdr = cmd.ExecuteReader();
 		
-		var players = new List<(string, float)>();
+		var players = new List<(string, string, float)>();
 
 		while (rdr.Read())
 		{
+			var guid = rdr.GetString("PlayerGUID");
 			var nick = rdr.GetString("Nickname");
 			var highscore = (float)rdr.GetDouble("Highscore");
 			var playerPk = rdr.GetInt32("PlayerPK");
-			players.Add((string.IsNullOrEmpty(nick) ? "Hráč" + playerPk : nick, highscore));
+			players.Add((guid, string.IsNullOrEmpty(nick) ? "Hráč" + playerPk : nick, highscore));
 		}
 		
 		rdr.Close();

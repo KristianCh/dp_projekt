@@ -14,11 +14,12 @@ namespace Entities.DataManagement
         [SerializeField]
         private TMP_Text _ScoreText;
 
-        public void SetData(int position, string nickname, float score)
+        public void SetData(int position, string nickname, float score, bool isPlayer)
         {
             _PositionText.text = position + ".";
             _NickText.text = nickname;
             _ScoreText.text = Mathf.RoundToInt(score).ToString();
+            _NickText.color = isPlayer ? Color.green : Color.white;
         }
     }
 }
