@@ -58,6 +58,7 @@ public class DatabaseHandler : MonoBehaviour, IService
 		DontDestroyOnLoad (gameObject);
 
 		RecordPlayerData();
+		CheckPlayerExists();
 			
 		Debug.Log(Con.State);
 		
@@ -101,10 +102,17 @@ public class DatabaseHandler : MonoBehaviour, IService
 	{
 		if (_playerExistsCache) return true;
 		var playerGuid = PlayerPrefs.GetString("PlayerGUID");
-		var cmdText = $"SELECT 1 FROM Players WHERE PlayerGUID='{playerGuid}';";
+		var cmdText = $"SELECT * FROM Players WHERE PlayerGUID='{playerGuid}';";
 		Cmd.CommandText = cmdText;
 		rdr = Cmd.ExecuteReader();
 		_playerExistsCache = rdr.HasRows;
+
+		var playerPk = 0;
+		while (rdr.Read())
+		{
+			playerPk = rdr.GetInt32("PlayerPK");
+		}
+		PlayerPrefs.SetInt("PlayerPK", playerPk);
 		rdr.Close();
 		return _playerExistsCache;
 	}
@@ -117,9 +125,8 @@ public class DatabaseHandler : MonoBehaviour, IService
 		var cmdText = $"INSERT INTO Players VALUES ('{playerGuid}', '{nickname}', {highscore.ToString(CultureInfo.InvariantCulture)})";
 
 		if (PlayerExists)
-		{
 			cmdText = $"UPDATE Players SET Nickname='{nickname}', Highscore={highscore.ToString(CultureInfo.InvariantCulture)} WHERE PlayerGUID='{playerGuid}'";
-		}
+		
 		Cmd.CommandText = cmdText;
 		Cmd.ExecuteNonQueryAsync();
 	}
