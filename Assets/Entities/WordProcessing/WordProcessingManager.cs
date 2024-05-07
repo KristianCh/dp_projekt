@@ -137,14 +137,14 @@ namespace Entities.WordProcessing
             "rana;6.982456140350878;zranenie,odrenie,porezanie,zlomenina",
             "slovo;4.811320754716981;jazyk,hovorenie,komunikácia,veta",
             "červ;5.684210526315789;bezstavovec,dážďovka,pásomnica",
-            "klobása;4.912280701754386;mäaso,saláma,párok,chorizo",
+            "klobása;4.912280701754386;mäso,saláma,párok,chorizo",
             "les;6.6415094339622645;vegetácia,strom,porast,prales",
             "zášť;11.49056603773585;nepriateľstvo,závisť,mrzutosť,nenávisť",
             "semeno;6.983870967741935;ovocie,rastlina,orech,žaľuď,slnečnica",
             "morálnosť;10.702127659574469;svedomie,zásadovosť",
             "mydlo;3.52;čistota,umývanie,kúpeľňa,šampón",
             "pacient;5.981132075471698;chorý,liečený,choroba",
-            "soľ;12.547619047619047;chemikália,korenie,príchuť,jedľo",
+            "soľ;12.547619047619047;chemikália,korenie,príchuť,jedlo",
             "huba;8.169811320754716;fungus,jedľo,porast",
             "sviňa;6.2;párnokopytník,kanec,prasnica,diviak"
         };
