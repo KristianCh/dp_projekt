@@ -60,6 +60,7 @@ namespace Entities.Gameplay
         private Coroutine _moveRoutine;
         
         public Signal<Lane> LaneChangedSignal = new();
+        private float _baseY;
 
         private void Awake()
         {
@@ -171,7 +172,11 @@ namespace Entities.Gameplay
 
             void Slide()
             {
-                _slideRoutine = StartCoroutine(SlideRoutine());
+                if (_jumpRoutine == null) return;
+                _playerTransform.position = _playerTransform.position.WithY(_baseY);
+                StopCoroutine(_jumpRoutine);
+                _jumpRoutine = null;
+                //_slideRoutine = StartCoroutine(SlideRoutine());
             }
         }
 
@@ -188,7 +193,7 @@ namespace Entities.Gameplay
         {
             //yield return new WaitForSeconds(_MovementSettings.JumpDuration);
             var elapsedTime = 0f;
-            var baseY = _playerTransform.position.y;
+            _baseY = _playerTransform.position.y;
             while (elapsedTime < _MovementSettings.JumpDuration)
             { 
                 var progress = elapsedTime / _MovementSettings.JumpDuration;
@@ -196,12 +201,12 @@ namespace Entities.Gameplay
                 if (progress < 0.5f) tweenValue = DOVirtual.EasedValue(0, 1, progress * 2f, Ease.OutQuad);
                 else tweenValue = DOVirtual.EasedValue(1, 0, (progress - 0.5f) * 2f, Ease.InQuad);
                 if (float.IsNaN(tweenValue)) Debug.LogError("Progress is NaN");
-                _playerTransform.position = _playerTransform.position.WithY(baseY + tweenValue * _MovementSettings.JumpHeight);
+                _playerTransform.position = _playerTransform.position.WithY(_baseY + tweenValue * _MovementSettings.JumpHeight);
                 yield return new WaitForEndOfFrame();
                 elapsedTime += Time.deltaTime;
             }
 
-            _playerTransform.position = _playerTransform.position.WithY(baseY);
+            _playerTransform.position = _playerTransform.position.WithY(_baseY);
             _jumpRoutine = null;
         }
 

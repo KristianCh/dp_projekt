@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7c1c6c88e61473c85d457cd1ee3ae1e, type: 3}
   m_Name: LevelDefinition
   m_EditorClassIdentifier: 
-  _StartSpeed: 2
+  _StartSpeed: 3
   _MaxSpeed: 5
   _SpeedupStartTime:
-    _TimeSpan: 00:00:30
+    _TimeSpan: 00:00:00
   _SpeedupEndTime:
     _TimeSpan: 00:05:00
