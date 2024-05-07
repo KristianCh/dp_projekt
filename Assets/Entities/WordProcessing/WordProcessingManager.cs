@@ -121,7 +121,32 @@ namespace Entities.WordProcessing
             "hviezda;5.555555555555555;nebeské_teleso,slnko,žiara",
             "palica;11.11320754716981;papek,tyč,konár",
             "tím;9.407407407407407;jednotka,spolok,družina,partia",
-            "čaj;6.8;nápoj,pohár,teplý,bylinky"
+            "čaj;6.8;nápoj,pohár,teplý,bylinky",
+            "časovať;11.60377358490566;hodiny,hodinky,čas,limit,stopky",
+            "sveter;4.982142857142857;oblečenie,pulóver,vlnený",
+            "jastrab;8.60377358490566;vták,lovec,rýchly,operenec",
+            "pierko;7.26;vtáčie,pero,ľahké",
+            "farba;6.105263157894737;náter,štetec,sprej",
+            "poryv;8.351851851851851;vietor,závan,prievan",
+            "hlasovať;13.371428571428572;voľba,voľby,výber,referendum",
+            "voda;3.574074074074074;tekutina,číra,more,rieka,jazero,nápoj",
+            "plachta;9.283018867924529;plachetnica,látka,vietor,loď",
+            "koleso;5.053571428571429;stroj,bicykel,auto,kruh",
+            "vlk;5.678571428571429;cicavec,dravec,šelma",
+            "oblak;5.2592592592592595;voda,obloha,dážď,búrka",
+            "rana;6.982456140350878;zranenie,odrenie,porezanie,zlomenina",
+            "slovo;4.811320754716981;jazyk,hovorenie,komunikácia,veta",
+            "červ;5.684210526315789;bezstavovec,dážďovka,pásomnica",
+            "klobása;4.912280701754386;mäaso,saláma,párok,chorizo",
+            "les;6.6415094339622645;vegetácia,strom,porast,prales",
+            "zášť;11.49056603773585;nepriateľstvo,závisť,mrzutosť,nenávisť",
+            "semeno;6.983870967741935;ovocie,rastlina,orech,žaľuď,slnečnica",
+            "morálnosť;10.702127659574469;svedomie,zásadovosť",
+            "mydlo;3.52;čistota,umývanie,kúpeľňa,šampón",
+            "pacient;5.981132075471698;chorý,liečený,choroba",
+            "soľ;12.547619047619047;chemikália,korenie,príchuť,jedľo",
+            "huba;8.169811320754716;fungus,jedľo,porast",
+            "sviňa;6.2;párnokopytník,kanec,prasnica,diviak"
         };
         
         public void Start()
