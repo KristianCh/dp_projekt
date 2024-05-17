@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using System.Data;
 using System.Data.SqlClient;
@@ -40,7 +41,7 @@ public class DatabaseHandler : MonoBehaviour, IService
 	private SqlConnection Con {
 		get
 		{
-			if (con == null)
+			if (GetConnectionState() == "Closed")
 			{
 				con = new SqlConnection(ConString);
 				con.Open();
@@ -75,7 +76,7 @@ public class DatabaseHandler : MonoBehaviour, IService
 	
 	public string GetConnectionState(){
 		if (con == null) return "Closed";
-		return con.State.ToString ();
+		return con.State.ToString();
 	}
 
 	public void RecordGameRating(string ratedWord, string answeredWord, string correctWord, string incorrectWord, float wordAoA)
@@ -113,7 +114,7 @@ public class DatabaseHandler : MonoBehaviour, IService
 			playerPk = rdr.GetInt32("PlayerPK");
 		}
 		PlayerPrefs.SetInt("PlayerPK", playerPk);
-		rdr.Close();
+		CloseReader(rdr);
 		return _playerExistsCache;
 	}
 
@@ -124,11 +125,16 @@ public class DatabaseHandler : MonoBehaviour, IService
 		var highscore = PlayerPrefs.GetFloat("HighScore");
 		var cmdText = $"INSERT INTO Players VALUES ('{playerGuid}', '{nickname}', {highscore.ToString(CultureInfo.InvariantCulture)})";
 
-		if (PlayerExists)
-			cmdText = $"UPDATE Players SET Nickname='{nickname}', Highscore={highscore.ToString(CultureInfo.InvariantCulture)} WHERE PlayerGUID='{playerGuid}'";
-		
-		Cmd.CommandText = cmdText;
-		Cmd.ExecuteNonQueryAsync();
+		StartCoroutine(RecordPlayerDataAsync());
+		IEnumerator RecordPlayerDataAsync()
+		{
+			if (PlayerExists)
+				cmdText = $"UPDATE Players SET Nickname='{nickname}', Highscore={highscore.ToString(CultureInfo.InvariantCulture)} WHERE PlayerGUID='{playerGuid}'";
+			
+			Cmd.CommandText = cmdText;
+			Cmd.ExecuteNonQueryAsync();	
+			yield break;
+		}
 	}
 
 	public List<(string guid, string nick, float highscore)> GetTopPlayers()
@@ -147,7 +153,13 @@ public class DatabaseHandler : MonoBehaviour, IService
 			players.Add((guid, string.IsNullOrEmpty(nick) ? "Hráč" + playerPk : nick, highscore));
 		}
 		
-		rdr.Close();
+		CloseReader(rdr);
 		return players;
+	}
+
+	private void CloseReader(SqlDataReader rdr)
+	{
+		if (Con.State.ToString () == "Open")
+			rdr.Close();
 	}
 }
