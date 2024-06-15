@@ -1162,11 +1162,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 316de7431ed1a44c18a61d7a6909b94a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Host: chov-dp-dev.database.windows.net
-  _Port: 1433
-  _Database: dp-dev
-  _UserId: chovancak
-  _Password: Karoljekokot.421
+  _Host:
+  _Port:
+  _Database:
+  _UserId:
+  _Password:
 --- !u!1 &1236667771
 GameObject:
   m_ObjectHideFlags: 0
