@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _JumpDuration: 1
   _SlideDuration: 1
-  _MoveDuration: 1
+  _MoveDuration: 0.5
   _MinSwipeDistance: 0.5
   _MinSwipeTimeSeconds: 0.05
   _MaxSwipeTimeSeconds: 5
   _JumpHeight: 4
-  _MoveEase: 10
+  _MoveEase: 7

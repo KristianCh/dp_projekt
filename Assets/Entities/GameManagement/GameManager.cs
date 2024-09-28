@@ -26,6 +26,9 @@ namespace Entities.GameManagement
         {
             DontDestroyOnLoad(gameObject);
             
+            if (Instance != null)
+                Destroy(gameObject);
+            
             Instance = this;
             ApplicationStartedSignal.Dispatch();
 

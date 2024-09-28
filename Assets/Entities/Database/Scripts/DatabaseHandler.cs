@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using System.Data;
 using System.Data.SqlClient;
@@ -29,31 +30,41 @@ public class DatabaseHandler : MonoBehaviour, IService
 	private SqlCommand cmd = null;
 	private SqlDataReader rdr = null;
 
+	private bool _playerExistsCache = false;
+
 	private MD5 _md5Hash;
+	private string ConString => "Server=" + _Host + "," + _Port + ";" +
+	                            "Database=" + _Database + ";" +
+	                            "User ID=" + _UserId + ";" +
+	                            "Password=" + _Password + ";";
+
+	private SqlConnection Con {
+		get
+		{
+			if (GetConnectionState() == "Closed")
+			{
+				con = new SqlConnection(ConString);
+				con.Open();
+			}
+
+			return con;
+		}
+	}
+
+	private SqlCommand Cmd => cmd ??= Con.CreateCommand();
+	private bool PlayerExists => _playerExistsCache || CheckPlayerExists();
 
 	void Awake(){
 		GameManager.AddService(this);
 		DontDestroyOnLoad (gameObject);
-		
-		var conString = "Server=" + _Host + "," + _Port + ";" +
-		                "Database=" + _Database + ";" +
-		                "User ID=" + _UserId + ";" +
-		                "Password=" + _Password + ";";
-		
-		var result = "";
-
-		con = new SqlConnection(conString);
-		con.Open();
-		cmd = con.CreateCommand();
 
 		RecordPlayerData();
-		GetTopPlayers();
+		CheckPlayerExists();
 			
-		Debug.Log(con.State);
-		Debug.Log(result);
+		Debug.Log(Con.State);
 		
 	}
-	private void onApplicationQuit(){
+	private void OnApplicationQuit(){
 		if (con != null) {
 			if (con.State.ToString () != "Closed") {
 				con.Close ();
@@ -65,7 +76,7 @@ public class DatabaseHandler : MonoBehaviour, IService
 	
 	public string GetConnectionState(){
 		if (con == null) return "Closed";
-		return con.State.ToString ();
+		return con.State.ToString();
 	}
 
 	public void RecordGameRating(string ratedWord, string answeredWord, string correctWord, string incorrectWord, float wordAoA)
@@ -74,8 +85,8 @@ public class DatabaseHandler : MonoBehaviour, IService
 		var playerAge = PlayerPrefs.GetInt("Age");
 		var cmdText =
 			$"INSERT INTO GameRatings VALUES ('{playerGuid}', {playerAge}, '{ratedWord}', '{answeredWord}', '{correctWord}', '{incorrectWord}', {wordAoA.ToString(CultureInfo.InvariantCulture)})";
-		cmd.CommandText = cmdText;
-		cmd.ExecuteNonQuery();
+		Cmd.CommandText = cmdText;
+		Cmd.ExecuteNonQueryAsync();
 	}
 
 	public void RecordManualRating(string ratedWord, float wordAoA, int playerRatedAge)
@@ -84,19 +95,27 @@ public class DatabaseHandler : MonoBehaviour, IService
 		var playerAge = PlayerPrefs.GetInt("Age");
 		var cmdText =
 			$"INSERT INTO ManualRatings VALUES ('{playerGuid}', '{ratedWord}', {playerAge}, {wordAoA.ToString(CultureInfo.InvariantCulture)}, {playerRatedAge})";
-		cmd.CommandText = cmdText;
-		cmd.ExecuteNonQuery();
+		Cmd.CommandText = cmdText;
+		Cmd.ExecuteNonQueryAsync();
 	}
 
-	public bool PlayerExists()
+	public bool CheckPlayerExists()
 	{
+		if (_playerExistsCache) return true;
 		var playerGuid = PlayerPrefs.GetString("PlayerGUID");
-		var cmdText = $"SELECT 1 FROM Players WHERE PlayerGUID='{playerGuid}';";
-		cmd.CommandText = cmdText;
-		rdr = cmd.ExecuteReader();
-		var exists = rdr.HasRows;
-		rdr.Close();
-		return exists;
+		var cmdText = $"SELECT * FROM Players WHERE PlayerGUID='{playerGuid}';";
+		Cmd.CommandText = cmdText;
+		rdr = Cmd.ExecuteReader();
+		_playerExistsCache = rdr.HasRows;
+
+		var playerPk = 0;
+		while (rdr.Read())
+		{
+			playerPk = rdr.GetInt32("PlayerPK");
+		}
+		PlayerPrefs.SetInt("PlayerPK", playerPk);
+		CloseReader(rdr);
+		return _playerExistsCache;
 	}
 
 	public void RecordPlayerData()
@@ -106,30 +125,41 @@ public class DatabaseHandler : MonoBehaviour, IService
 		var highscore = PlayerPrefs.GetFloat("HighScore");
 		var cmdText = $"INSERT INTO Players VALUES ('{playerGuid}', '{nickname}', {highscore.ToString(CultureInfo.InvariantCulture)})";
 
-		if (PlayerExists())
+		StartCoroutine(RecordPlayerDataAsync());
+		IEnumerator RecordPlayerDataAsync()
 		{
-			cmdText = $"UPDATE Players SET Nickname='{nickname}', Highscore={highscore.ToString(CultureInfo.InvariantCulture)} WHERE PlayerGUID='{playerGuid}'";
+			if (PlayerExists)
+				cmdText = $"UPDATE Players SET Nickname='{nickname}', Highscore={highscore.ToString(CultureInfo.InvariantCulture)} WHERE PlayerGUID='{playerGuid}'";
+			
+			Cmd.CommandText = cmdText;
+			Cmd.ExecuteNonQueryAsync();	
+			yield break;
 		}
-		cmd.CommandText = cmdText;
-		cmd.ExecuteNonQuery();
 	}
 
-	public List<(string nick, float highscore)> GetTopPlayers()
+	public List<(string guid, string nick, float highscore)> GetTopPlayers()
 	{
-		cmd.CommandText = "SELECT TOP 10 * FROM Players ORDER BY Highscore DESC";
-		rdr = cmd.ExecuteReader();
+		Cmd.CommandText = "SELECT TOP 10 * FROM Players ORDER BY Highscore DESC";
+		rdr = Cmd.ExecuteReader();
 		
-		var players = new List<(string, float)>();
+		var players = new List<(string, string, float)>();
 
 		while (rdr.Read())
 		{
+			var guid = rdr.GetString("PlayerGUID");
 			var nick = rdr.GetString("Nickname");
 			var highscore = (float)rdr.GetDouble("Highscore");
 			var playerPk = rdr.GetInt32("PlayerPK");
-			players.Add((string.IsNullOrEmpty(nick) ? "Hráč" + playerPk : nick, highscore));
+			players.Add((guid, string.IsNullOrEmpty(nick) ? "Hráč" + playerPk : nick, highscore));
 		}
 		
-		rdr.Close();
+		CloseReader(rdr);
 		return players;
+	}
+
+	private void CloseReader(SqlDataReader rdr)
+	{
+		if (Con.State.ToString () == "Open")
+			rdr.Close();
 	}
 }

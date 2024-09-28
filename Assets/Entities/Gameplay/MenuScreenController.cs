@@ -110,7 +110,10 @@ namespace Entities.Gameplay
         private void UpdateAgeDisplay()
         {
             var text = _SetAgeButton.GetComponentInChildren<TMP_Text>();
-            text.text = "Vek " + (PlayerPrefs.HasKey("Age") ? PlayerPrefs.GetInt("Age") : "??");
+            var nick = PlayerPrefs.GetString("Nickname");
+            var playerPk = PlayerPrefs.GetInt("PlayerPK");
+            if (string.IsNullOrEmpty(nick)) nick = "Hráč" + playerPk;
+            text.text = "Vek " + PlayerPrefs.GetInt("Age") + "\n" + nick;
         }
     }
 }

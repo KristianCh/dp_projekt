@@ -27,7 +27,9 @@ namespace Entities.DataManagement
             for (var i = 0; i < _HighscoreItems.Count; i++)
             {
                 if (i < players.Count)
-                    _HighscoreItems[i].SetData(i + 1, players[i].nick, players[i].highscore);
+                {
+                    _HighscoreItems[i].SetData(i + 1, players[i].nick, players[i].highscore, players[i].guid == PlayerPrefs.GetString("PlayerGUID"));
+                }
                 else
                     _HighscoreItems[i].gameObject.SetActive(false);
             }
