@@ -1,0 +1,133 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19d8a77d33fb465e9d5d3501eb61a21a, type: 3}
+  m_Name: CosmeticsDefinitions
+  m_EditorClassIdentifier: 
+  _Items:
+  - _Title: Biela
+    _ItemCode: white
+    _ItemType: 0
+    _Cost: 0
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 0}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "\u010Cierna"
+    _ItemCode: black
+    _ItemType: 0
+    _Cost: 100
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 0}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "Modr\xE1"
+    _ItemCode: blue
+    _ItemType: 0
+    _Cost: 1
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 0}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "Tyrkysov\xE1"
+    _ItemCode: cyan
+    _ItemType: 0
+    _Cost: 100
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 0}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "Zelen\xE1"
+    _ItemCode: green
+    _ItemType: 0
+    _Cost: 100
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 0}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "Siv\xE1"
+    _ItemCode: grey
+    _ItemType: 0
+    _Cost: 100
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 0}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "Purpurov\xE1"
+    _ItemCode: magenta
+    _ItemType: 0
+    _Cost: 100
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 0}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "\u010Cerven\xE1"
+    _ItemCode: red
+    _ItemType: 0
+    _Cost: 100
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 0}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "\u017Dlt\xE1"
+    _ItemCode: yellow
+    _ItemType: 0
+    _Cost: 100
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 0}
+    _PlayerTexture: {fileID: 0}
+  - _Title: Top Hat
+    _ItemCode: TopHat
+    _ItemType: 1
+    _Cost: 1
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 3248065237806734151, guid: f43b71f41b1c4114f9902d9c27f9d457,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: Baseball Hat
+    _ItemCode: BBHat
+    _ItemType: 1
+    _Cost: 1
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 4251216515593157811, guid: e1194307154615047954d5c1d7fea6ea,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: Viking Helmet
+    _ItemCode: VikingHelmet
+    _ItemType: 1
+    _Cost: 0
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 2849518700338511191, guid: cb16aac03f375024fb3f71c187484da7,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: Skybox
+    _ItemCode: skybox
+    _ItemType: 2
+    _Cost: 1
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 0}
+    _PlayerTexture: {fileID: 21300000, guid: 1a6f908c9e03d5c4587c7c4e323dd79d, type: 3}
+  - _Title: Particle
+    _ItemCode: particle
+    _ItemType: 3
+    _Cost: 1
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 7610437213587449330, guid: 752495d2a939f6b4ebf497fa23731ca3,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: Cowboy Hat
+    _ItemCode: CowboyHat
+    _ItemType: 1
+    _Cost: 0
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 238762609734448094, guid: 6ed2e8b1858827947b1529207ad17f1f,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: Mohawk
+    _ItemCode: Mohawk
+    _ItemType: 1
+    _Cost: 0
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 6512436011999593023, guid: 1ee42657180278a43b73ba2dc93976fa,
+      type: 3}
+    _PlayerTexture: {fileID: 0}

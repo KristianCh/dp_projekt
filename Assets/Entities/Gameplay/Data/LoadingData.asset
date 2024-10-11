@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c311760cad0484a9769a30e9d320b5f, type: 3}
   m_Name: LoadingData
   m_EditorClassIdentifier: 
-  _ObjectsToLoad: []
+  _ObjectsToLoad:
+  - {fileID: 5552790617306656539, guid: 91f8293a77224d34384a6c234fd8c966, type: 3}

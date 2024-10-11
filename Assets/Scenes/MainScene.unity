@@ -210,7 +210,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35.75
+  m_fontSize: 59.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1839,6 +1839,7 @@ GameObject:
   - component: {fileID: 1543257284}
   - component: {fileID: 1543257285}
   - component: {fileID: 1543257286}
+  - component: {fileID: 1543257287}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1953,6 +1954,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Collider: {fileID: 1543257284}
+--- !u!114 &1543257287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543257279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4073ec6ea0a54666949fdca37006df4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _MeshRenderer: {fileID: 1543257282}
 --- !u!1 &1547492063
 GameObject:
   m_ObjectHideFlags: 0

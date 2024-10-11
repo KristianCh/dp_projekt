@@ -18,7 +18,7 @@ namespace Entities.GameManagement
         public Signal ApplicationStartedSignal { get; } = new();
         public Signal LoadCompletedSignal { get; } = new();
         
-        private readonly Dictionary<System.Type, object> _services = new Dictionary<System.Type, object>();
+        private readonly Dictionary<Type, object> _services = new();
 
         private static GameManager Instance;
         
@@ -43,6 +43,7 @@ namespace Entities.GameManagement
                 PlayerPrefs.SetString("Color", "white");
             }
             PlayerPrefs.Save();
+            StartCoroutine(LoadCoroutine());
         }
 
         public static T GetService<T>() where T : class, IService
@@ -78,7 +79,7 @@ namespace Entities.GameManagement
             Instance._services.Remove(typeof(T));
         }
 
-        private IEnumerator StartLoadCoroutine()
+        private IEnumerator LoadCoroutine()
         {
             if (_LoadingData == null)
             {

@@ -1,13 +1,15 @@
 ﻿using System;
 using DG.Tweening;
+using Entities.DataManagement.Cosmetics;
 using Entities.Utils;
+using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Entities.DataManagement
 {
-    public class StoreItem : MonoBehaviour
+    public class StoreItemController : MonoBehaviour
     {
         [SerializeField]
         private Image _Image;
@@ -31,23 +33,38 @@ namespace Entities.DataManagement
         private Image _EquippedImage;
 
         private StoreController _storeController;
-        private StoreController.Item _item;
+        private StoreItem _item;
 
         private static event Action ItemEquipped;
 
-        internal void Initialize(StoreController storeController, StoreController.Item item, float width)
+        internal void Initialize(StoreController storeController, StoreItem item, float width)
         {
             _storeController = storeController;
             _item = item;
             _TitleText.text = _item.Title;
-            _Image.color = ColorMapper.ColorMap[item.ColorCode];
+
+            switch (_item.ItemType)
+            {
+                case ItemTypes.PlayerColor:
+                    _Image.color = ColorMapper.ColorMap[item.ItemCode];
+                    break;
+                case ItemTypes.Hat:
+                case ItemTypes.ParticleEffect:
+                    _Image.sprite = _item.Icon;
+                    break;
+                case ItemTypes.PlayerTexture:
+                    _Image.sprite = _item.PlayerTexture;
+                    break;
+            }
+            
+            
             _CostText.text = _item.Cost.ToString();
             ItemEquipped += OnItemEquipped;
             _Button.onClick.AddListener(OnButtonClick);
             
             _UnpurchasedPanel.gameObject.SetActive(!_item.IsPurchased);
             _PurchasedPanel.gameObject.SetActive(_item.IsPurchased);
-            _EquippedImage.gameObject.SetActive(_item.ColorCode == PlayerPrefs.GetString("Color"));
+            _EquippedImage.gameObject.SetActive(_item.ItemCode == PlayerPrefs.GetString(_item.ItemType.ToString()));
             GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width * 1.5f);
         }
 
@@ -65,7 +82,7 @@ namespace Entities.DataManagement
                 {
                     transform.DOLocalJump(transform.localPosition, 10, 1, 0.5f);
                     PlayerPrefs.SetInt("Coins", currentCoins - _item.Cost);
-                    PlayerPrefs.SetInt(_item.ColorCode, 1);
+                    PlayerPrefs.SetInt(_item.StorageKeyValue, 1);
                     PlayerPrefs.Save();
 
                     _storeController.UpdateCoins();
@@ -81,7 +98,7 @@ namespace Entities.DataManagement
             {
                 ItemEquipped?.Invoke();
                 _EquippedImage.gameObject.SetActive(true);
-                PlayerPrefs.SetString("Color", _item.ColorCode);
+                PlayerPrefs.SetString(_item.ItemType.ToString(), _item.ItemCode);
                 PlayerPrefs.Save();
             }
             

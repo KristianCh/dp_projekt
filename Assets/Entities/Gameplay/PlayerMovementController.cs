@@ -62,14 +62,6 @@ namespace Entities.Gameplay
         public Signal<Lane> LaneChangedSignal = new();
         private float _baseY;
 
-        private void Awake()
-        {
-            if (PlayerPrefs.HasKey("Color"))
-            {
-                _MeshRenderer.material.color = ColorMapper.ColorMap[PlayerPrefs.GetString("Color")];
-            }
-        }
-
         private void Update()
         {
             _Camera.transform.localPosition = _Camera.transform.localPosition.WithX(_playerTransform.localPosition.x / 2f);
