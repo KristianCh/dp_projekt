@@ -1,15 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.Net.Sockets;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
+using Entities.Database;
 using Entities.GameManagement;
 
 public class DatabaseHandler : MonoBehaviour, IService
 {
-
 	[SerializeField]
 	private string _Host;
 	
@@ -31,6 +35,7 @@ public class DatabaseHandler : MonoBehaviour, IService
 	private SqlDataReader rdr = null;
 
 	private bool _playerExistsCache = false;
+	private PlayerDataManager _playerDataManager;
 
 	private MD5 _md5Hash;
 	private string ConString => "Server=" + _Host + "," + _Port + ";" +
@@ -41,7 +46,7 @@ public class DatabaseHandler : MonoBehaviour, IService
 	private SqlConnection Con {
 		get
 		{
-			if (GetConnectionState() == "Closed")
+			if (GetConnectionState() == ConnectionState.Closed)
 			{
 				con = new SqlConnection(ConString);
 				con.Open();
@@ -52,18 +57,50 @@ public class DatabaseHandler : MonoBehaviour, IService
 	}
 
 	private SqlCommand Cmd => cmd ??= Con.CreateCommand();
-	private bool PlayerExists => _playerExistsCache || CheckPlayerExists();
 
-	void Awake(){
+	private void Awake()
+	{
 		GameManager.AddService(this);
-		DontDestroyOnLoad (gameObject);
-
-		RecordPlayerData();
-		CheckPlayerExists();
-			
-		Debug.Log(Con.State);
-		
 	}
+
+	private void Start()
+	{
+		_playerDataManager = GameManager.GetService<PlayerDataManager>();
+		Task.Run(Initialize);
+	}
+
+	private async UniTask Initialize()
+	{
+		con = new SqlConnection(ConString);
+		Debug.Log("Opening Connection");
+		var retryConnection = true;
+		while (retryConnection)
+		{
+			retryConnection = false;
+			try
+			{
+				await con.OpenAsync();
+			}
+			catch (SqlException e)
+			{
+				Debug.LogException(e);
+				Debug.Log("Database unavailable");
+				throw;
+			}
+			catch (SocketException e)
+			{
+				Debug.LogException(e);
+				Debug.Log("Database loading, retrying...");
+				retryConnection = true;
+			}
+		}
+		Debug.Log("Connection Opened");
+		
+		Debug.Log("Recording PlayerData");
+		await RecordPlayerDataInternal();
+		Debug.Log("Recorded PlayerData");
+	}
+	
 	private void OnApplicationQuit(){
 		if (con != null) {
 			if (con.State.ToString () != "Closed") {
@@ -74,77 +111,70 @@ public class DatabaseHandler : MonoBehaviour, IService
 		}
 	}
 	
-	public string GetConnectionState(){
-		if (con == null) return "Closed";
-		return con.State.ToString();
+	public ConnectionState GetConnectionState(){
+		if (con == null) return ConnectionState.Closed;
+		return con.State;
 	}
 
-	public void RecordGameRating(string ratedWord, string answeredWord, string correctWord, string incorrectWord, float wordAoA)
+	public async void RecordGameRating(string ratedWord, string answeredWord, string correctWord, string incorrectWord,
+		float wordAoA)
 	{
-		var playerGuid = PlayerPrefs.GetString("PlayerGUID");
-		var playerAge = PlayerPrefs.GetInt("Age");
+		await Task.Run(() => RecordGameRatingInternal(ratedWord, answeredWord, correctWord, incorrectWord, wordAoA));
+	}
+
+	public async UniTask RecordGameRatingInternal(string ratedWord, string answeredWord, string correctWord, string incorrectWord, float wordAoA)
+	{
+		var playerGuid = _playerDataManager.PlayerGuid;
+		var playerAge = _playerDataManager.PlayerAge;
 		var cmdText =
 			$"INSERT INTO GameRatings VALUES ('{playerGuid}', {playerAge}, '{ratedWord}', '{answeredWord}', '{correctWord}', '{incorrectWord}', {wordAoA.ToString(CultureInfo.InvariantCulture)})";
 		Cmd.CommandText = cmdText;
-		Cmd.ExecuteNonQueryAsync();
+		await Cmd.ExecuteNonQueryAsync();
 	}
 
-	public void RecordManualRating(string ratedWord, float wordAoA, int playerRatedAge)
+	public async void RecordManualRating(string ratedWord, float wordAoA, int playerRatedAge)
 	{
-		var playerGuid = PlayerPrefs.GetString("PlayerGUID");
-		var playerAge = PlayerPrefs.GetInt("Age");
+		await Task.Run(() => RecordManualRatingInternal(ratedWord, wordAoA, playerRatedAge));
+	}
+	
+	private async UniTask RecordManualRatingInternal(string ratedWord, float wordAoA, int playerRatedAge)
+	{
+		var playerGuid = _playerDataManager.PlayerGuid;
+		var playerAge = _playerDataManager.PlayerAge;
 		var cmdText =
 			$"INSERT INTO ManualRatings VALUES ('{playerGuid}', '{ratedWord}', {playerAge}, {wordAoA.ToString(CultureInfo.InvariantCulture)}, {playerRatedAge})";
 		Cmd.CommandText = cmdText;
-		Cmd.ExecuteNonQueryAsync();
+		await Cmd.ExecuteNonQueryAsync();
 	}
 
-	public bool CheckPlayerExists()
-	{
-		if (_playerExistsCache) return true;
-		var playerGuid = PlayerPrefs.GetString("PlayerGUID");
-		var cmdText = $"SELECT * FROM Players WHERE PlayerGUID='{playerGuid}';";
-		Cmd.CommandText = cmdText;
-		rdr = Cmd.ExecuteReader();
-		_playerExistsCache = rdr.HasRows;
-
-		var playerPk = 0;
-		while (rdr.Read())
-		{
-			playerPk = rdr.GetInt32("PlayerPK");
-		}
-		PlayerPrefs.SetInt("PlayerPK", playerPk);
-		CloseReader(rdr);
-		return _playerExistsCache;
+	public async void RecordPlayerData()
+	{ 
+		await RecordPlayerDataInternal();
 	}
 
-	public void RecordPlayerData()
+	private async UniTask RecordPlayerDataInternal()
 	{
-		var playerGuid = PlayerPrefs.GetString("PlayerGUID");
-		var nickname = PlayerPrefs.GetString("Nickname");
-		var highscore = PlayerPrefs.GetFloat("HighScore");
+		var playerGuid = _playerDataManager.PlayerGuid;
+		var nickname = _playerDataManager.PlayerNickname;
+		var highscore = _playerDataManager.PlayerHighscore;
 		var cmdText = $"INSERT INTO Players VALUES ('{playerGuid}', '{nickname}', {highscore.ToString(CultureInfo.InvariantCulture)})";
 
-		StartCoroutine(RecordPlayerDataAsync());
-		IEnumerator RecordPlayerDataAsync()
-		{
-			if (PlayerExists)
-				cmdText = $"UPDATE Players SET Nickname='{nickname}', Highscore={highscore.ToString(CultureInfo.InvariantCulture)} WHERE PlayerGUID='{playerGuid}'";
-			
-			Cmd.CommandText = cmdText;
-			Cmd.ExecuteNonQueryAsync();	
-			yield break;
-		}
+		var playerExists = await CheckPlayerExists();
+		if (playerExists)
+			cmdText = $"UPDATE Players SET Nickname='{nickname}', Highscore={highscore.ToString(CultureInfo.InvariantCulture)} WHERE PlayerGUID='{playerGuid}'";
+		
+		Cmd.CommandText = cmdText;
+		await Cmd.ExecuteNonQueryAsync();
 	}
 
-	public List<(string guid, string nick, float highscore)> GetTopPlayers()
+	public async UniTask<List<(string guid, string nick, float highscore)>> GetTopPlayers()
 	{
 		Cmd.CommandText = "SELECT TOP 10 * FROM Players ORDER BY Highscore DESC";
-		rdr = Cmd.ExecuteReader();
+		rdr = await Cmd.ExecuteReaderAsync();
 		
 		var players = new List<(string, string, float)>();
 
-		while (rdr.Read())
+		while (await rdr.ReadAsync())
 		{
 			var guid = rdr.GetString("PlayerGUID");
 			var nick = rdr.GetString("Nickname");
@@ -157,9 +187,27 @@ public class DatabaseHandler : MonoBehaviour, IService
 		return players;
 	}
 
-	private void CloseReader(SqlDataReader rdr)
+	private async UniTask<bool> CheckPlayerExists()
 	{
-		if (Con.State.ToString () == "Open")
-			rdr.Close();
+		if (_playerExistsCache) return true;
+		var playerGuid = _playerDataManager.PlayerGuid;
+		var cmdText = $"SELECT * FROM Players WHERE PlayerGUID='{playerGuid}';";
+		Cmd.CommandText = cmdText;
+		rdr = await Cmd.ExecuteReaderAsync();
+		_playerExistsCache = rdr.HasRows;
+
+		var playerPk = 0;
+		while (await rdr.ReadAsync())
+		{
+			playerPk = rdr.GetInt32("PlayerPK");
+		}
+		_playerDataManager.PlayerPk = playerPk;
+		CloseReader(rdr);
+		return _playerExistsCache;
+	}
+
+	private async void CloseReader(SqlDataReader rdr)
+	{
+		await rdr.CloseAsync();
 	}
 }

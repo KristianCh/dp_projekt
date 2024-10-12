@@ -310,7 +310,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 171.5
+  m_fontSize: 100.05
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -445,7 +445,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 158.1
+  m_fontSize: 59.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -581,6 +581,7 @@ MonoBehaviour:
   _Root: {fileID: 4739114297224089677}
   _CancelButton: {fileID: 4251595761542620526}
   _HighscoreText: {fileID: 7478279185091724918}
+  _HighscoreItemsContainer: {fileID: 1542223065374123213}
   _HighscoreItems:
   - {fileID: 2907219906679937934}
   - {fileID: 4470754400835554421}
@@ -725,7 +726,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 79.05
+  m_fontSize: 45
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
