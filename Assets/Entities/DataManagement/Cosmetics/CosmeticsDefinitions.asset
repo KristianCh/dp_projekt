@@ -148,13 +148,14 @@ MonoBehaviour:
     _ItemWorldPrefab: {fileID: 6512436011999593023, guid: 1ee42657180278a43b73ba2dc93976fa,
       type: 3}
     _PlayerTexture: {fileID: 0}
-  - _Title: Skybox
-    _ItemCode: skybox
-    _ItemType: 2
-    _Cost: 1
+  - _Title: "\u017Diadne"
+    _ItemCode: NoParticle
+    _ItemType: 3
+    _Cost: 0
     _Icon: {fileID: 0}
-    _ItemWorldPrefab: {fileID: 0}
-    _PlayerTexture: {fileID: 21300000, guid: 1a6f908c9e03d5c4587c7c4e323dd79d, type: 3}
+    _ItemWorldPrefab: {fileID: 7610437213587449330, guid: 71a255137dd15a840a3332d18ea640f9,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
   - _Title: Netopiere
     _ItemCode: Bats
     _ItemType: 3
@@ -203,3 +204,24 @@ MonoBehaviour:
     _ItemWorldPrefab: {fileID: 7610437213587449330, guid: b9a4e7b60862747449dba6ee1ef85c08,
       type: 3}
     _PlayerTexture: {fileID: 0}
+  - _Title: "\u017Eiadna"
+    _ItemCode: NoTexture
+    _ItemType: 2
+    _Cost: 0
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 0}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "Basketbalov\xE1 Lopta"
+    _ItemCode: Basketball
+    _ItemType: 2
+    _Cost: 0
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 0}
+    _PlayerTexture: {fileID: 21300000, guid: fac85e8ff8bd547418deea4cdd6ee0ee, type: 3}
+  - _Title: "Tenisov\xE1 Lopta"
+    _ItemCode: Tennisball
+    _ItemType: 2
+    _Cost: 0
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 0}
+    _PlayerTexture: {fileID: 21300000, guid: 2efdc98617df2bf488a352698cdb80ba, type: 3}
