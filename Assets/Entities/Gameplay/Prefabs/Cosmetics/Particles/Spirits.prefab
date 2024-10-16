@@ -187,6 +187,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 198163637374424290, guid: daa6cceb1b087d74aad6916dac2805ea,
         type: 3}
+      propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198163637374424290, guid: daa6cceb1b087d74aad6916dac2805ea,
+        type: 3}
       propertyPath: ShapeModule.m_Scale.x
       value: 2
       objectReference: {fileID: 0}
