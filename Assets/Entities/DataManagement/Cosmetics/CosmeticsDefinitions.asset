@@ -87,7 +87,7 @@ MonoBehaviour:
   - _Title: "Biela \u0160iltovka"
     _ItemCode: BBHatWhite
     _ItemType: 1
-    _Cost: 1
+    _Cost: 100
     _Icon: {fileID: 21300000, guid: 8b864b44a13cc0541bda26aab3195bcd, type: 3}
     _ItemWorldPrefab: {fileID: 4251216515593157811, guid: e1194307154615047954d5c1d7fea6ea,
       type: 3}
@@ -95,7 +95,7 @@ MonoBehaviour:
   - _Title: "\u010Cerven\xE1 \u0160iltovka"
     _ItemCode: BBHatRed
     _ItemType: 1
-    _Cost: 1
+    _Cost: 100
     _Icon: {fileID: 21300000, guid: dcc392f042398bc488c3ffe59cbc6f5a, type: 3}
     _ItemWorldPrefab: {fileID: 2747145400597910053, guid: f0aa6bdf003390843a125851fbcdfe73,
       type: 3}
@@ -103,7 +103,7 @@ MonoBehaviour:
   - _Title: "Zelen\xE1 \u0160iltovka"
     _ItemCode: BBHatGreen
     _ItemType: 1
-    _Cost: 1
+    _Cost: 100
     _Icon: {fileID: 21300000, guid: afef22c684687d74d8eaadc093418042, type: 3}
     _ItemWorldPrefab: {fileID: 2747145400597910053, guid: de0b6f06196789b419d21bf6bc068d64,
       type: 3}
@@ -111,7 +111,7 @@ MonoBehaviour:
   - _Title: "Modr\xE1 \u0160iltovka"
     _ItemCode: BBHatBlue
     _ItemType: 1
-    _Cost: 1
+    _Cost: 100
     _Icon: {fileID: 21300000, guid: 5766b965163a6374eace6f9bc14e1142, type: 3}
     _ItemWorldPrefab: {fileID: 2747145400597910053, guid: dbbb7cad589253d489b14d98fb004981,
       type: 3}
@@ -119,31 +119,31 @@ MonoBehaviour:
   - _Title: Cylinder
     _ItemCode: TopHat
     _ItemType: 1
-    _Cost: 1
+    _Cost: 200
     _Icon: {fileID: 21300000, guid: 3b0595aa394b18946a57360aaf0601fc, type: 3}
     _ItemWorldPrefab: {fileID: 3248065237806734151, guid: f43b71f41b1c4114f9902d9c27f9d457,
-      type: 3}
-    _PlayerTexture: {fileID: 0}
-  - _Title: Viking Helmet
-    _ItemCode: VikingHelmet
-    _ItemType: 1
-    _Cost: 0
-    _Icon: {fileID: 21300000, guid: 761aa502e4151334c9eda23c0fd1b2cd, type: 3}
-    _ItemWorldPrefab: {fileID: 2849518700338511191, guid: cb16aac03f375024fb3f71c187484da7,
       type: 3}
     _PlayerTexture: {fileID: 0}
   - _Title: "Cowboysk\xFD Klob\xFAk"
     _ItemCode: CowboyHat
     _ItemType: 1
-    _Cost: 0
+    _Cost: 200
     _Icon: {fileID: 21300000, guid: 2bbb8669c5c806b4492ab4152c2a5b4d, type: 3}
     _ItemWorldPrefab: {fileID: 238762609734448094, guid: 6ed2e8b1858827947b1529207ad17f1f,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: Viking Helmet
+    _ItemCode: VikingHelmet
+    _ItemType: 1
+    _Cost: 300
+    _Icon: {fileID: 21300000, guid: 761aa502e4151334c9eda23c0fd1b2cd, type: 3}
+    _ItemWorldPrefab: {fileID: 2849518700338511191, guid: cb16aac03f375024fb3f71c187484da7,
       type: 3}
     _PlayerTexture: {fileID: 0}
   - _Title: Mohawk
     _ItemCode: Mohawk
     _ItemType: 1
-    _Cost: 0
+    _Cost: 300
     _Icon: {fileID: 21300000, guid: 52fdfedcb9e203a47b629c8ea9373c89, type: 3}
     _ItemWorldPrefab: {fileID: 6512436011999593023, guid: 1ee42657180278a43b73ba2dc93976fa,
       type: 3}
@@ -155,11 +155,51 @@ MonoBehaviour:
     _Icon: {fileID: 0}
     _ItemWorldPrefab: {fileID: 0}
     _PlayerTexture: {fileID: 21300000, guid: 1a6f908c9e03d5c4587c7c4e323dd79d, type: 3}
-  - _Title: Particle
-    _ItemCode: particle
+  - _Title: Netopiere
+    _ItemCode: Bats
     _ItemType: 3
     _Cost: 1
     _Icon: {fileID: 0}
     _ItemWorldPrefab: {fileID: 7610437213587449330, guid: 752495d2a939f6b4ebf497fa23731ca3,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "Svetlu\u0161ky"
+    _ItemCode: Spirits
+    _ItemType: 3
+    _Cost: 0
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 7610437213587449330, guid: 45da81c3320242b43b52afacd076518f,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "Ohniv\xE1 \u0160pir\xE1la"
+    _ItemCode: FireSpiral
+    _ItemType: 3
+    _Cost: 0
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 7610437213587449330, guid: d8545bd0a7fd8fb49befbf0229c2c339,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "Ohe\u0148"
+    _ItemCode: Fire
+    _ItemType: 3
+    _Cost: 0
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 7610437213587449330, guid: c9999bfbe04768740b97f484ee9f8a2b,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "Magick\xE1 Aura"
+    _ItemCode: MagicAura
+    _ItemType: 3
+    _Cost: 0
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 7610437213587449330, guid: ede7b039e719fc042b47a7b7ddbbd27e,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: Bublinky
+    _ItemCode: Bubbles
+    _ItemType: 3
+    _Cost: 0
+    _Icon: {fileID: 0}
+    _ItemWorldPrefab: {fileID: 7610437213587449330, guid: b9a4e7b60862747449dba6ee1ef85c08,
       type: 3}
     _PlayerTexture: {fileID: 0}
