@@ -76,28 +76,76 @@ MonoBehaviour:
     _Icon: {fileID: 0}
     _ItemWorldPrefab: {fileID: 0}
     _PlayerTexture: {fileID: 0}
-  - _Title: Top Hat
+  - _Title: "\u017Diadna"
+    _ItemCode: NoHat
+    _ItemType: 1
+    _Cost: 0
+    _Icon: {fileID: 21300000, guid: 63de49b47090d65428429326313716ae, type: 3}
+    _ItemWorldPrefab: {fileID: 1488775124347815939, guid: 2cc877bda40341b418401e3daf41d263,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "Biela \u0160iltovka"
+    _ItemCode: BBHatWhite
+    _ItemType: 1
+    _Cost: 1
+    _Icon: {fileID: 21300000, guid: 8b864b44a13cc0541bda26aab3195bcd, type: 3}
+    _ItemWorldPrefab: {fileID: 4251216515593157811, guid: e1194307154615047954d5c1d7fea6ea,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "\u010Cerven\xE1 \u0160iltovka"
+    _ItemCode: BBHatRed
+    _ItemType: 1
+    _Cost: 1
+    _Icon: {fileID: 21300000, guid: dcc392f042398bc488c3ffe59cbc6f5a, type: 3}
+    _ItemWorldPrefab: {fileID: 2747145400597910053, guid: f0aa6bdf003390843a125851fbcdfe73,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "Zelen\xE1 \u0160iltovka"
+    _ItemCode: BBHatGreen
+    _ItemType: 1
+    _Cost: 1
+    _Icon: {fileID: 21300000, guid: afef22c684687d74d8eaadc093418042, type: 3}
+    _ItemWorldPrefab: {fileID: 2747145400597910053, guid: de0b6f06196789b419d21bf6bc068d64,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "Modr\xE1 \u0160iltovka"
+    _ItemCode: BBHatBlue
+    _ItemType: 1
+    _Cost: 1
+    _Icon: {fileID: 21300000, guid: 5766b965163a6374eace6f9bc14e1142, type: 3}
+    _ItemWorldPrefab: {fileID: 2747145400597910053, guid: dbbb7cad589253d489b14d98fb004981,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: Cylinder
     _ItemCode: TopHat
     _ItemType: 1
     _Cost: 1
-    _Icon: {fileID: 0}
+    _Icon: {fileID: 21300000, guid: 3b0595aa394b18946a57360aaf0601fc, type: 3}
     _ItemWorldPrefab: {fileID: 3248065237806734151, guid: f43b71f41b1c4114f9902d9c27f9d457,
-      type: 3}
-    _PlayerTexture: {fileID: 0}
-  - _Title: Baseball Hat
-    _ItemCode: BBHat
-    _ItemType: 1
-    _Cost: 1
-    _Icon: {fileID: 0}
-    _ItemWorldPrefab: {fileID: 4251216515593157811, guid: e1194307154615047954d5c1d7fea6ea,
       type: 3}
     _PlayerTexture: {fileID: 0}
   - _Title: Viking Helmet
     _ItemCode: VikingHelmet
     _ItemType: 1
     _Cost: 0
-    _Icon: {fileID: 0}
+    _Icon: {fileID: 21300000, guid: 761aa502e4151334c9eda23c0fd1b2cd, type: 3}
     _ItemWorldPrefab: {fileID: 2849518700338511191, guid: cb16aac03f375024fb3f71c187484da7,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: "Cowboysk\xFD Klob\xFAk"
+    _ItemCode: CowboyHat
+    _ItemType: 1
+    _Cost: 0
+    _Icon: {fileID: 21300000, guid: 2bbb8669c5c806b4492ab4152c2a5b4d, type: 3}
+    _ItemWorldPrefab: {fileID: 238762609734448094, guid: 6ed2e8b1858827947b1529207ad17f1f,
+      type: 3}
+    _PlayerTexture: {fileID: 0}
+  - _Title: Mohawk
+    _ItemCode: Mohawk
+    _ItemType: 1
+    _Cost: 0
+    _Icon: {fileID: 21300000, guid: 52fdfedcb9e203a47b629c8ea9373c89, type: 3}
+    _ItemWorldPrefab: {fileID: 6512436011999593023, guid: 1ee42657180278a43b73ba2dc93976fa,
       type: 3}
     _PlayerTexture: {fileID: 0}
   - _Title: Skybox
@@ -113,21 +161,5 @@ MonoBehaviour:
     _Cost: 1
     _Icon: {fileID: 0}
     _ItemWorldPrefab: {fileID: 7610437213587449330, guid: 752495d2a939f6b4ebf497fa23731ca3,
-      type: 3}
-    _PlayerTexture: {fileID: 0}
-  - _Title: Cowboy Hat
-    _ItemCode: CowboyHat
-    _ItemType: 1
-    _Cost: 0
-    _Icon: {fileID: 0}
-    _ItemWorldPrefab: {fileID: 238762609734448094, guid: 6ed2e8b1858827947b1529207ad17f1f,
-      type: 3}
-    _PlayerTexture: {fileID: 0}
-  - _Title: Mohawk
-    _ItemCode: Mohawk
-    _ItemType: 1
-    _Cost: 0
-    _Icon: {fileID: 0}
-    _ItemWorldPrefab: {fileID: 6512436011999593023, guid: 1ee42657180278a43b73ba2dc93976fa,
       type: 3}
     _PlayerTexture: {fileID: 0}

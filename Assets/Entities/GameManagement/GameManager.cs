@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Entities.DataManagement.Cosmetics;
 using Entities.Events;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -32,17 +33,7 @@ namespace Entities.GameManagement
             Instance = this;
             ApplicationStartedSignal.Dispatch();
 
-            if (!PlayerPrefs.HasKey("PlayerGUID"))
-            {
-                var guid = Guid.NewGuid().ToString();
-                PlayerPrefs.SetString("PlayerGUID", guid);
-            }
-
-            if (!PlayerPrefs.HasKey("Color"))
-            {
-                PlayerPrefs.SetString("Color", "white");
-            }
-            PlayerPrefs.Save();
+            InitializePlayerPrefs();
             StartCoroutine(LoadCoroutine());
         }
 
@@ -93,6 +84,22 @@ namespace Entities.GameManagement
             }
             
             LoadCompletedSignal.Dispatch();
+        }
+
+        private void InitializePlayerPrefs()
+        {
+            if (!PlayerPrefs.HasKey("PlayerGUID"))
+            {
+                var guid = Guid.NewGuid().ToString();
+                PlayerPrefs.SetString("PlayerGUID", guid);
+            }
+
+            if (!PlayerPrefs.HasKey(ItemTypes.PlayerColor.ToString())) PlayerPrefs.SetString(ItemTypes.PlayerColor.ToString(), "white");
+            if (!PlayerPrefs.HasKey(ItemTypes.Hat.ToString())) PlayerPrefs.SetString(ItemTypes.Hat.ToString(), "NoHat");
+            if (!PlayerPrefs.HasKey(ItemTypes.PlayerTexture.ToString())) PlayerPrefs.SetString(ItemTypes.PlayerTexture.ToString(), "NoTexture");
+            if (!PlayerPrefs.HasKey(ItemTypes.ParticleEffect.ToString())) PlayerPrefs.SetString(ItemTypes.ParticleEffect.ToString(), "NoParticle");
+            
+            PlayerPrefs.Save();
         }
     }
 }
