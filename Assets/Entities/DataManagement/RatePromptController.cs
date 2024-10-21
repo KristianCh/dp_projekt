@@ -66,6 +66,7 @@ namespace Entities.DataManagement
         {
             if (int.TryParse(_InputField.text, out var value) && value <= 100)
             {
+                _wordProcessingManager.IncrementRatedTimes(_worldTriple.MainWord);
                 _databaseHandler.RecordManualRating(_worldTriple.MainWord, _worldTriple.WordAOA, value);
 				
 				var currentCoins = PlayerPrefs.GetInt("Coins");

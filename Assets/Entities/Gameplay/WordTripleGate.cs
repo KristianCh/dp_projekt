@@ -53,6 +53,7 @@ namespace Entities.Gameplay
             _databaseHandler = GameManager.GetService<DatabaseHandler>();
             _wordProcessingManager = GameManager.GetService<WordProcessingManager>();
             SetWordTriple(_wordProcessingManager.GetWordTriple());
+            _wordProcessingManager.IncrementRatedTimes(_currentTriple.MainWord);
         }
 
         private void SetWordTriple(WordTriple wordTriple)

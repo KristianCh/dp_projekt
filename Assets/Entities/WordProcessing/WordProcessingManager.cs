@@ -10,20 +10,29 @@ namespace Entities.WordProcessing
 {
     public class WordProcessingManager : MonoBehaviour, IService
     {
-        private struct WordDataEntry
+        private class WordDataEntry
         {
             public string MainWord { get; set; }
             public float RecordedAoA { get; set; }
             public List<string> RelatedWords { get; set; }
+            public int RatedTimes { get; set; }
 
             [UsedImplicitly]
             public bool Equals(WordDataEntry x, WordDataEntry y) => x.MainWord == y.MainWord;
             
-            public WordDataEntry(string mainWord, float recordedAoA, List<string> relatedWords)
+            public WordDataEntry(string mainWord, float recordedAoA, List<string> relatedWords, int ratedTimes = 0)
             {
                 MainWord = mainWord;
                 RecordedAoA = recordedAoA;
                 RelatedWords = relatedWords;
+                RatedTimes = ratedTimes;
+            }
+
+            public void IncrementRatedTimes()
+            {
+                RatedTimes++;
+                PlayerPrefs.SetInt(MainWord + "RatedTimes", RatedTimes);
+                PlayerPrefs.Save();
             }
         }
         
@@ -152,22 +161,22 @@ namespace Entities.WordProcessing
         public void Start()
         {
             GameManager.AddService(this);
-            //CsvReader.Read(_WordDataFilePath, _MainSeparator, out var result);
-            
 
             foreach (var line in _unparsedRelatedWords)
             {
                 var result = CsvReader.ParseLine(line, _MainSeparator);
                 var aoa = float.Parse(result[1], CultureInfo.InvariantCulture.NumberFormat);
                 var relatedWords = result[2].Split(_RelatedWordsSeparator).ToList();
+                var ratedTimes= PlayerPrefs.GetInt(result[0] + "RatedTimes", 0);
                 
-                _relatedWordData.Add(new WordDataEntry(result[0], aoa, relatedWords));
+                _relatedWordData.Add(new WordDataEntry(result[0], aoa, relatedWords, ratedTimes));
             }      
         }
 
         public WordTriple GetWordTriple()
         {
-            var mainWordData = RandomUtils.RandomFromList(_relatedWordData);
+            var maxRatedTimes = _relatedWordData.Max(r => r.RatedTimes);
+            var mainWordData = RandomUtils.WeightedRandomFromList(_relatedWordData, i => maxRatedTimes - i.RatedTimes + 1);
             var otherWordData = mainWordData;
             while (otherWordData.Equals(mainWordData)) 
                 otherWordData = RandomUtils.RandomFromList(_relatedWordData);
@@ -184,6 +193,13 @@ namespace Entities.WordProcessing
         {
             var newWord = word.Replace("_", " ");
             return char.ToUpper(newWord[0]) + newWord[1..];
+        }
+        
+
+        public void IncrementRatedTimes(string mainWord)
+        {
+            var mainWordData = _relatedWordData.Find(r => r.MainWord == mainWord);
+            mainWordData.IncrementRatedTimes();
         }
     }
 }
