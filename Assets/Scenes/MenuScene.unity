@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: f10458ee16a26c24c8661e9a0620f6b8, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 114997b85f82f82498364e99b284f7a1, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.21440916, g: 0.24520041, b: 0.14812659, a: 1}
+  m_IndirectSpecularColor: {r: 0.3809397, g: 0.27988425, b: 0.58538985, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:

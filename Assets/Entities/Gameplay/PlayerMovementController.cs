@@ -2,6 +2,7 @@
 using System.Collections;
 using DG.Tweening;
 using Entities.Events;
+using Entities.GameManagement;
 using Entities.Utils;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -61,10 +62,17 @@ namespace Entities.Gameplay
         
         public Signal<Lane> LaneChangedSignal = new();
         private float _baseY;
+        private LevelManager _levelManager;
+        private LevelManager LevelManager => _levelManager ??= GameManager.GetService<LevelManager>();
 
         private void Update()
         {
-            _Camera.transform.localPosition = _Camera.transform.localPosition.WithX(_playerTransform.localPosition.x / 2f);
+            var zRot = _playerTransform.rotation.eulerAngles.z < 180 ? _playerTransform.rotation.eulerAngles.z : _playerTransform.rotation.eulerAngles.z - 360f;
+            var dXRot = Time.deltaTime * 4 * LevelManager.SpeedMultiplier * (4 * Mathf.PI);
+            var dZRot = Time.deltaTime * Mathf.Sign(-zRot) * 5;
+            Debug.Log(_playerTransform.rotation.eulerAngles.z + "  " + dZRot);
+            _MeshRenderer.transform.rotation *= Quaternion.Euler(dXRot, 0, 0);
+            _playerTransform.rotation *= Quaternion.Euler(0, 0, dZRot);
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -176,6 +184,7 @@ namespace Entities.Gameplay
         {
             //yield return new WaitForSeconds(_MovementSettings.MoveDuration);
             _playerTransform.DOMoveX(_currentLaneTransform.position.x, _MovementSettings.MoveDuration).SetEase(_MovementSettings.MoveEase);
+            _playerTransform.DOShakeRotation(_MovementSettings.MoveDuration, Vector3.forward * 20, 1);
 
             _moveRoutine = null;
             yield break;

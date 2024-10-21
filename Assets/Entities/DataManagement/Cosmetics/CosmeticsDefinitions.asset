@@ -30,7 +30,7 @@ MonoBehaviour:
   - _Title: "Modr\xE1"
     _ItemCode: blue
     _ItemType: 0
-    _Cost: 1
+    _Cost: 100
     _Icon: {fileID: 0}
     _ItemWorldPrefab: {fileID: 0}
     _PlayerTexture: {fileID: 0}
