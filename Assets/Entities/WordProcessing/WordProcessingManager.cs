@@ -30,7 +30,12 @@ namespace Entities.WordProcessing
 
             public void IncrementRatedTimes()
             {
-                RatedTimes++;
+                SetRatedTimes(RatedTimes + 1);
+            }
+
+            public void SetRatedTimes(int ratedTimes)
+            {
+                RatedTimes = ratedTimes;
                 PlayerPrefs.SetInt(MainWord + "RatedTimes", RatedTimes);
                 PlayerPrefs.Save();
             }
@@ -200,6 +205,15 @@ namespace Entities.WordProcessing
         {
             var mainWordData = _relatedWordData.Find(r => r.MainWord == mainWord);
             mainWordData.IncrementRatedTimes();
+
+            var floor = _relatedWordData.Min(r => r.RatedTimes);
+            if (floor > 0)
+            {
+                foreach (var item in _relatedWordData)
+                {
+                    item.SetRatedTimes(item.RatedTimes - floor);
+                }
+            }
         }
     }
 }
