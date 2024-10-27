@@ -132,7 +132,7 @@ MonoBehaviour:
     _ItemWorldPrefab: {fileID: 238762609734448094, guid: 6ed2e8b1858827947b1529207ad17f1f,
       type: 3}
     _PlayerTexture: {fileID: 0}
-  - _Title: Viking Helmet
+  - _Title: "Vikingsk\xE1 Prilba"
     _ItemCode: VikingHelmet
     _ItemType: 1
     _Cost: 300

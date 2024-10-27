@@ -18,6 +18,9 @@ namespace Entities.DataManagement
         private TMP_Text _WordDisplay;
         
         [SerializeField]
+        private TMP_Text _ErrorText;
+        
+        [SerializeField]
         private TMP_InputField _InputField;
 
         [SerializeField]
@@ -60,6 +63,7 @@ namespace Entities.DataManagement
         {
             _worldTriple = _wordProcessingManager.GetWordTriple();
             _WordDisplay.text = _wordProcessingManager.NicifyWord(_worldTriple.MainWord);
+            _ErrorText.gameObject.SetActive(false);
         }
 
         private void OnSubmit()
@@ -74,8 +78,17 @@ namespace Entities.DataManagement
                     
                 _RatePanel.gameObject.SetActive(false);
                 _ThankYouPanel.gameObject.SetActive(true);
+                _ErrorText.gameObject.SetActive(false);
                 _InputField.text = "";
             }
+            else 
+                DisplayError();
+        }
+
+        private void DisplayError()
+        {
+            _ErrorText.gameObject.SetActive(true);
+            _ErrorText.transform.DOShakeRotation(0.1f, 10f);
         }
 
         private void OnRateAnother()

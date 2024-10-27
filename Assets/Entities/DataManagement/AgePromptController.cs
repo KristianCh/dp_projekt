@@ -19,6 +19,9 @@ namespace Entities.DataManagement
 
         [SerializeField]
         private Button _SubmitButton;
+        
+        [SerializeField]
+        private TMP_Text _ErrorText;
 
         private DatabaseHandler _databaseHandler;
         private PlayerDataManager _playerDataManager;
@@ -33,6 +36,7 @@ namespace Entities.DataManagement
             _SubmitButton.onClick.AddListener(OnSubmit);
             _AgeInputField.text = _playerDataManager.PlayerAge.ToString();
             _NickInputField.text = _playerDataManager.PlayerNickname;
+            _ErrorText.gameObject.SetActive(false);
         }
         
         protected override void ClosePopup()
@@ -50,10 +54,18 @@ namespace Entities.DataManagement
                 {
                     _playerDataManager.PlayerNickname = _NickInputField.text;
                     _databaseHandler.RecordPlayerData();
+                    _ErrorText.gameObject.SetActive(false);
                 }
-                
                 ClosePopup();
             }
+            else 
+                DisplayError();
+        }
+
+        private void DisplayError()
+        {
+            _ErrorText.gameObject.SetActive(true);
+            _ErrorText.transform.DOShakeRotation(0.1f, 10f);
         }
     }
 }
