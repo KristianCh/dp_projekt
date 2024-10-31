@@ -20,10 +20,9 @@ namespace Entities.Gameplay
         private void Awake()
         {
             _storeContentManager = GameManager.GetService<StoreContentManager>();
-            if (ItemTypes.PlayerTexture.ToString() == "NoTexture") 
+            if (PlayerPrefs.GetString(ItemTypes.PlayerTexture.ToString()) == "NoTexture") 
                 _MeshRenderer.material.color = ColorMapper.ColorMap[PlayerPrefs.GetString(ItemTypes.PlayerColor.ToString())];
-            
-            if (_storeContentManager.TryGetItemByItemCode(PlayerPrefs.GetString(ItemTypes.PlayerTexture.ToString()),
+            else if (_storeContentManager.TryGetItemByItemCode(PlayerPrefs.GetString(ItemTypes.PlayerTexture.ToString()),
                     out var texture)) _MeshRenderer.material.mainTexture = texture.PlayerTexture.texture;
             
             if (_storeContentManager.TryGetItemByItemCode(PlayerPrefs.GetString(ItemTypes.Hat.ToString()),

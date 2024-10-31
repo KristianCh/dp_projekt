@@ -152,7 +152,7 @@ MonoBehaviour:
     _ItemCode: NoParticle
     _ItemType: 3
     _Cost: 0
-    _Icon: {fileID: 0}
+    _Icon: {fileID: 21300000, guid: 36755d7c288c54f4c94b212a938c7d23, type: 3}
     _ItemWorldPrefab: {fileID: 7610437213587449330, guid: 71a255137dd15a840a3332d18ea640f9,
       type: 3}
     _PlayerTexture: {fileID: 0}
@@ -160,7 +160,7 @@ MonoBehaviour:
     _ItemCode: Spirits
     _ItemType: 3
     _Cost: 200
-    _Icon: {fileID: 0}
+    _Icon: {fileID: 21300000, guid: de612fbb832c55243bf5d6a551fbc4cf, type: 3}
     _ItemWorldPrefab: {fileID: 7610437213587449330, guid: 45da81c3320242b43b52afacd076518f,
       type: 3}
     _PlayerTexture: {fileID: 0}
@@ -168,7 +168,7 @@ MonoBehaviour:
     _ItemCode: Bats
     _ItemType: 3
     _Cost: 250
-    _Icon: {fileID: 0}
+    _Icon: {fileID: 21300000, guid: 4ebfe2aedb6ac6745919f075bce81c6a, type: 3}
     _ItemWorldPrefab: {fileID: 7610437213587449330, guid: 752495d2a939f6b4ebf497fa23731ca3,
       type: 3}
     _PlayerTexture: {fileID: 0}
@@ -176,7 +176,7 @@ MonoBehaviour:
     _ItemCode: Bubbles
     _ItemType: 3
     _Cost: 250
-    _Icon: {fileID: 0}
+    _Icon: {fileID: 21300000, guid: 5453ca4d002596e4a960a73a9b4ff151, type: 3}
     _ItemWorldPrefab: {fileID: 7610437213587449330, guid: b9a4e7b60862747449dba6ee1ef85c08,
       type: 3}
     _PlayerTexture: {fileID: 0}
@@ -184,7 +184,7 @@ MonoBehaviour:
     _ItemCode: Fire
     _ItemType: 3
     _Cost: 300
-    _Icon: {fileID: 0}
+    _Icon: {fileID: 21300000, guid: ff07d44c07fa039449ba6166653b2c6b, type: 3}
     _ItemWorldPrefab: {fileID: 7610437213587449330, guid: c9999bfbe04768740b97f484ee9f8a2b,
       type: 3}
     _PlayerTexture: {fileID: 0}
@@ -192,7 +192,7 @@ MonoBehaviour:
     _ItemCode: MagicAura
     _ItemType: 3
     _Cost: 300
-    _Icon: {fileID: 0}
+    _Icon: {fileID: 21300000, guid: 876055580058baa419ea36157dcb5bb0, type: 3}
     _ItemWorldPrefab: {fileID: 7610437213587449330, guid: ede7b039e719fc042b47a7b7ddbbd27e,
       type: 3}
     _PlayerTexture: {fileID: 0}
@@ -200,7 +200,7 @@ MonoBehaviour:
     _ItemCode: FireSpiral
     _ItemType: 3
     _Cost: 350
-    _Icon: {fileID: 0}
+    _Icon: {fileID: 21300000, guid: e51210cc385421c449640bed80950f21, type: 3}
     _ItemWorldPrefab: {fileID: 7610437213587449330, guid: d8545bd0a7fd8fb49befbf0229c2c339,
       type: 3}
     _PlayerTexture: {fileID: 0}
