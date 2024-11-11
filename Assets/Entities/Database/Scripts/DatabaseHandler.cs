@@ -84,8 +84,8 @@ public class DatabaseHandler : MonoBehaviour, IService
 			catch (SqlException e)
 			{
 				Debug.LogException(e);
-				Debug.Log("Database unavailable");
-				throw;
+				Debug.Log("Database unavailable, retrying...");
+				retryConnection = true;
 			}
 			catch (SocketException e)
 			{
