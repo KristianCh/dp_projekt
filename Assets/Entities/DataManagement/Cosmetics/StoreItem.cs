@@ -31,13 +31,21 @@ namespace Entities.DataManagement.Cosmetics
         private int _Cost;
             
         [SerializeField]
+#if UNITY_EDITOR
         [ShowIf(nameof(ShowIcon))]
+#endif
         private Sprite _Icon;
 
-        [SerializeField] [ShowIf(nameof(ShowPrefab))]
+        [SerializeField]
+#if UNITY_EDITOR
+        [ShowIf(nameof(ShowPrefab))]
+#endif
         private GameObject _ItemWorldPrefab;
         
-        [SerializeField] [ShowIf(nameof(ShowTexture))]
+        [SerializeField]
+#if UNITY_EDITOR
+        [ShowIf(nameof(ShowTexture))]
+#endif
         private Sprite _PlayerTexture;
             
         public string Title => _Title;
