@@ -93,6 +93,7 @@ public class DatabaseHandler : MonoBehaviour, IService
 				Debug.Log("Database loading, retrying...");
 				retryConnection = true;
 			}
+			await Task.Delay(5000);
 		}
 		Debug.Log("Connection Opened");
 		
