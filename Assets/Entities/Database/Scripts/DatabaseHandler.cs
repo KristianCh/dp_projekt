@@ -81,16 +81,10 @@ public class DatabaseHandler : MonoBehaviour, IService
 			{
 				await con.OpenAsync();
 			}
-			catch (SqlException e)
+			catch (Exception e)
 			{
 				Debug.LogException(e);
 				Debug.Log("Database unavailable, retrying...");
-				retryConnection = true;
-			}
-			catch (SocketException e)
-			{
-				Debug.LogException(e);
-				Debug.Log("Database loading, retrying...");
 				retryConnection = true;
 			}
 			await Task.Delay(5000);
