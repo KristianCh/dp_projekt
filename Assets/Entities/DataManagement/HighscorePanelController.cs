@@ -56,14 +56,14 @@ namespace Entities.DataManagement
 
         private IEnumerator SetHighscores()
         {
-            _HighscoreText.text = "Loading...";
+            _HighscoreText.text = "Načítavanie...";
             _HighscoreItemsContainer.SetActive(false);
             
             while (_players.IsNullOrEmpty())
             {
                 if (_hadErrorLoading)
                 {
-                    _HighscoreText.text = "Error loading highscores";
+                    _HighscoreText.text = "Problém pri načítaní vysokého skóre";
                     yield break;
                 }
                 yield return null;
