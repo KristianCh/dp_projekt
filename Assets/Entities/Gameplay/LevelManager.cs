@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Entities.Database;
 using Entities.GameManagement;
 using TMPro;
 using UnityEngine;
@@ -56,6 +57,7 @@ namespace Entities.Gameplay
         private float _targetSpeedMultiplier = 1;
         private Tween _speedMultiplierIncreaseTween;
         private DatabaseHandler _databaseHandler;
+        private PlayerDataManager _playerDataManager;
 
         public float SpeedMultiplier => _speedMultiplier;
         public GameObject PlayerObject => _PlayerObject;
@@ -63,6 +65,7 @@ namespace Entities.Gameplay
         private void Start()
         {
             GameManager.AddService(this);
+            _playerDataManager = GameManager.GetService<PlayerDataManager>();
             _isDead = false;
             
             if (TryGetObstacleSpawnConfig(out var spawnConfig))
@@ -227,11 +230,9 @@ namespace Entities.Gameplay
 
         private void UpdatePlayerDataOnGameOver(float finalScore, int collectedCoins)
         {
-            var highScore = 0f;
-            if (PlayerPrefs.HasKey("HighScore")) highScore = PlayerPrefs.GetFloat("HighScore");
-            if (highScore < finalScore)
+            if (_playerDataManager.PlayerHighscore < finalScore)
             {
-                PlayerPrefs.SetFloat("HighScore", finalScore);
+                _playerDataManager.PlayerHighscore = finalScore;
                 
                 _databaseHandler.RecordPlayerData();
             }
