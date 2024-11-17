@@ -47,7 +47,7 @@ namespace Entities.DataManagement
 
         private void OnSubmit()
         {
-            if (int.TryParse(_AgeInputField.text, out var value) && value <= 100 && value >= 3)
+            if (int.TryParse(_AgeInputField.text, out var value) && value <= 100 && value >= 1)
             {
                 _playerDataManager.PlayerAge = value;
                 if (_NickInputField.text != _playerDataManager.PlayerNickname)
