@@ -755,7 +755,7 @@ namespace Entities.WordProcessing
         public WordTriple GetWordTriple()
         {
             var maxRatedTimes = _relatedWordData.Max(r => r.RatedTimes);
-            var mainWordData = RandomUtils.WeightedRandomFromList(_relatedWordData, i => maxRatedTimes - i.RatedTimes + 1);
+            var mainWordData = RandomUtils.WeightedRandomFromList(_relatedWordData, i => Mathf.Max(maxRatedTimes - i.RatedTimes, 1));
             var incorrectWord = RandomUtils.RandomFromList(_unrelatedWords);
             return new WordTriple
             (

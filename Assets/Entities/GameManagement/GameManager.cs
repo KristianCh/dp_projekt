@@ -25,11 +25,13 @@ namespace Entities.GameManagement
         
         public void Awake()
         {
-            DontDestroyOnLoad(gameObject);
-            
-            if (Instance != null)
+            if (Instance != null && Instance != this)
+            {
                 Destroy(gameObject);
+                return;
+            }
             
+            DontDestroyOnLoad(gameObject);
             Instance = this;
             ApplicationStartedSignal.Dispatch();
 

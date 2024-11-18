@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Entities.Database;
@@ -99,6 +100,11 @@ namespace Entities.Gameplay
             if (_isDead) return;
             _score += _speedMultiplier * Time.deltaTime * (1 + _combo);
             _ScoreValueText.text = Mathf.RoundToInt(_score).ToString();
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.RemoveService<LevelManager>();
         }
 
         public void IncrementCombo()

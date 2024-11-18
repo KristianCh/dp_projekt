@@ -70,7 +70,6 @@ namespace Entities.Gameplay
             var zRot = _playerTransform.rotation.eulerAngles.z < 180 ? _playerTransform.rotation.eulerAngles.z : _playerTransform.rotation.eulerAngles.z - 360f;
             var dXRot = Time.deltaTime * 4 * LevelManager.SpeedMultiplier * (4 * Mathf.PI);
             var dZRot = Time.deltaTime * Mathf.Sign(-zRot) * 5;
-            Debug.Log(_playerTransform.rotation.eulerAngles.z + "  " + dZRot);
             _MeshRenderer.transform.rotation *= Quaternion.Euler(dXRot, 0, 0);
             _playerTransform.rotation *= Quaternion.Euler(0, 0, dZRot);
         }

@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: LoadingData
   m_EditorClassIdentifier: 
   _ObjectsToLoad:
+  - {fileID: 889691300363571235, guid: d4f86f435e87481499cff9d2fc916ddb, type: 3}
+  - {fileID: 6456544593067384384, guid: b5c5c3a942afc3e42989670d1b5e6baa, type: 3}
+  - {fileID: 2899178293286919207, guid: 04cde3fb7bf7b0644b83e5ab2c3e2288, type: 3}
   - {fileID: 5552790617306656539, guid: 91f8293a77224d34384a6c234fd8c966, type: 3}
