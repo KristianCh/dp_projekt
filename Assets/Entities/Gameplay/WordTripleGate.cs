@@ -56,6 +56,14 @@ namespace Entities.Gameplay
             _wordProcessingManager.IncrementRatedTimes(_currentTriple.MainWord);
         }
 
+        public override void Update()
+        {
+            base.Update();
+            var scale = Mathf.Clamp((transform.position.z - 8) * 0.05f, 1f, 2f);
+            if(_TitleWord == null || _TitleWord.canvas == null) return;
+            _TitleWord.canvas.transform.localScale = Vector3.one * scale;
+        }
+
         private void SetWordTriple(WordTriple wordTriple)
         {
             _currentTriple = wordTriple;
