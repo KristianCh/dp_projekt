@@ -52,7 +52,7 @@ namespace Entities.Gameplay
         private int _lastTrackIndex = 0;
         private bool _isDead;
 
-        private float _obstacleSpawnFrequency = 3;
+        private float _obstacleSpawnFrequency = 4;
         private float _itemSpawnFrequency = 5;
         private float _speedMultiplier = 1;
         private float _targetSpeedMultiplier = 1;
@@ -71,7 +71,7 @@ namespace Entities.Gameplay
             
             if (TryGetObstacleSpawnConfig(out var spawnConfig))
             {
-                ScheduleObstacleSpawn(_obstacleSpawnFrequency, spawnConfig.objectToSpawn, spawnConfig.parentTrack);
+                ScheduleObstacleSpawn(1, spawnConfig.objectToSpawn, spawnConfig.parentTrack);
             }
             if (TryGetItemSpawnConfig(out spawnConfig))
             {

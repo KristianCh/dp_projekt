@@ -21,10 +21,16 @@ namespace Entities.DataManagement
         private TMP_Text _ErrorText;
         
         [SerializeField]
+        private TMP_Text _RewardCoinText;
+        
+        [SerializeField]
         private TMP_InputField _InputField;
 
         [SerializeField]
         private Button _SubmitButton;
+
+        [SerializeField]
+        private Button _DontKnowButton;
         
         [Header("ThankYouPanel")]
         [SerializeField]
@@ -35,6 +41,9 @@ namespace Entities.DataManagement
 
         [SerializeField]
         private int rateReward = 5;
+
+        [SerializeField]
+        private int dontKnowRateReward = 1;
         
         private WordTriple _worldTriple;
         
@@ -45,6 +54,7 @@ namespace Entities.DataManagement
         {
             base.Awake();
             _SubmitButton.onClick.AddListener(OnSubmit);
+            _DontKnowButton.onClick.AddListener(OnDontKnowSubmit);
             _RateAnotherButton.onClick.AddListener(OnRateAnother);
             
             _databaseHandler = GameManager.GetService<DatabaseHandler>();
@@ -73,16 +83,32 @@ namespace Entities.DataManagement
                 _wordProcessingManager.IncrementRatedTimes(_worldTriple.MainWord);
                 _databaseHandler.RecordManualRating(_worldTriple.MainWord, _worldTriple.WordAOA, value);
 				
-				var currentCoins = PlayerPrefs.GetInt("Coins");
-				PlayerPrefs.SetInt("Coins", currentCoins + rateReward);
+                var currentCoins = PlayerPrefs.GetInt("Coins");
+                PlayerPrefs.SetInt("Coins", currentCoins + rateReward);
                     
                 _RatePanel.gameObject.SetActive(false);
+                _RewardCoinText.SetText("+" + rateReward);
                 _ThankYouPanel.gameObject.SetActive(true);
                 _ErrorText.gameObject.SetActive(false);
                 _InputField.text = "";
             }
             else 
                 DisplayError();
+        }
+
+        private void OnDontKnowSubmit()
+        {
+            _wordProcessingManager.IncrementRatedTimes(_worldTriple.MainWord);
+            _databaseHandler.RecordManualRating(_worldTriple.MainWord, _worldTriple.WordAOA, -1);
+			
+            var currentCoins = PlayerPrefs.GetInt("Coins");
+            PlayerPrefs.SetInt("Coins", currentCoins + dontKnowRateReward);
+                
+            _RatePanel.gameObject.SetActive(false);
+            _RewardCoinText.SetText("+" + dontKnowRateReward);
+            _ThankYouPanel.gameObject.SetActive(true);
+            _ErrorText.gameObject.SetActive(false);
+            _InputField.text = "";
         }
 
         private void DisplayError()

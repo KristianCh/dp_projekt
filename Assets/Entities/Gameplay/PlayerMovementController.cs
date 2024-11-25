@@ -72,6 +72,7 @@ namespace Entities.Gameplay
             var dZRot = Time.deltaTime * Mathf.Sign(-zRot) * 5;
             _MeshRenderer.transform.rotation *= Quaternion.Euler(dXRot, 0, 0);
             _playerTransform.rotation *= Quaternion.Euler(0, 0, dZRot);
+            _Camera.transform.localPosition = _Camera.transform.localPosition.WithX(_playerTransform.localPosition.x / 2f);
         }
 
         public void OnPointerDown(PointerEventData eventData)
