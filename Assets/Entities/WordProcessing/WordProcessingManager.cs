@@ -83,7 +83,7 @@ namespace Entities.WordProcessing
             "noviny;4.00;správy,papier",
             "štetec;4.03;obraz,maľba",
             "tučniak;5.09;vták,ľad",
-            "ananás;4,78;ovocie",
+            "ananás;4.78;ovocie",
             "pizza;7.91;jedlo",
             "poštár;4.21;práca,list",
             "raketa;5.42;vesmír,mesiac,letieť",
