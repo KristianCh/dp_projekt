@@ -59,7 +59,7 @@ namespace Entities.Gameplay
         public override void Update()
         {
             base.Update();
-            var scale = Mathf.Clamp((transform.position.z - 8) * 0.05f, 1f, 2f);
+            var scale = Mathf.Clamp(1f + (transform.position.z - 20) * 0.025f, 1f, 4f);
             if(_TitleWord == null || _TitleWord.canvas == null) return;
             _TitleWord.canvas.transform.localScale = Vector3.one * scale;
         }
