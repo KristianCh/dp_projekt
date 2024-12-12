@@ -15,6 +15,10 @@ using Sirenix.OdinInspector.Editor;
 
 namespace Entities.Utils
 {
+    
+    /// <summary>
+    /// TimeSpan which can be serialized. Implicitly interchangable with regular TimeSpan
+    /// </summary>
     [Serializable]
     public class SerializableTimeSpan : ISerializationCallbackReceiver, IComparable<SerializableTimeSpan>
     {

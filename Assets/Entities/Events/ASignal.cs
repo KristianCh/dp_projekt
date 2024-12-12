@@ -1,14 +1,12 @@
-﻿// // Author: Kristián Chovančák
-// // Created: 21.07.2023
-// // Copyright (c) Noxgames
-// // http://www.noxgames.com/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Entities.Events
 {
+    /// <summary>
+    /// Class allowing easy subscribing functions to events and dispatching said events.
+    /// </summary>
     public class ASignal
     {
         public event Action<ASignal, object[]> BaseListener;

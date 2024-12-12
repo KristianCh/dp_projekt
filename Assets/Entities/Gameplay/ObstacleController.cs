@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Entities.Gameplay
 {
+    /// <summary>
+    /// Controls obstacle in game.
+    /// </summary>
     public class ObstacleController : WorldObjectMovementController
     {
         [SerializeField]
@@ -13,6 +16,9 @@ namespace Entities.Gameplay
             _ColliderEvents.OnTriggerEnterEvent.AddOnce(OnPickup);
         }
 
+        /// <summary>
+        /// Calls death event in level manager.
+        /// </summary>
         private void OnPickup(Collider _)
         {
             _levelManager.OnDeath();

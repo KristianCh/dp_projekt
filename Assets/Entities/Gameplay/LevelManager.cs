@@ -11,6 +11,9 @@ using Random = UnityEngine.Random;
 
 namespace Entities.Gameplay
 {
+    /// <summary>
+    /// Controls spawning of objects in game and speed of the game. Reacts to playing interacting with coins, obstacles and rating gates.
+    /// </summary>
     public class LevelManager : MonoBehaviour, IService
     {
         [SerializeField]
@@ -63,6 +66,10 @@ namespace Entities.Gameplay
         public float SpeedMultiplier => _speedMultiplier;
         public GameObject PlayerObject => _PlayerObject;
 
+        
+        /// <summary>
+        /// Initializes object spawning.
+        /// </summary>
         private void Start()
         {
             GameManager.AddService(this);
@@ -94,6 +101,9 @@ namespace Entities.Gameplay
             _databaseHandler = GameManager.GetService<DatabaseHandler>();
         }
 
+        /// <summary>
+        /// Updates score.
+        /// </summary>
         public void Update()
         {
             _speedMultiplier = Mathf.Lerp(_speedMultiplier, _targetSpeedMultiplier, Time.deltaTime);
@@ -107,24 +117,36 @@ namespace Entities.Gameplay
             GameManager.RemoveService<LevelManager>();
         }
 
+        /// <summary>
+        /// Increases combo on correct rating.
+        /// </summary>
         public void IncrementCombo()
         {
             _combo++;
             _ComboValueText.text = Mathf.RoundToInt(_combo).ToString();
         }
 
+        /// <summary>
+        /// Decreases combo on neutral rating.
+        /// </summary>
         public void DecrementCombo()
         {
             _combo = Mathf.Max(0, _combo - 1);
             _ComboValueText.text = Mathf.RoundToInt(_combo).ToString();
         }
 
+        /// <summary>
+        /// Set combo to 0 on incorrect rating.
+        /// </summary>
         public void ResetCombo()
         {
             _combo = 0;
             _ComboValueText.text = Mathf.RoundToInt(_combo).ToString();
         }
 
+        /// <summary>
+        /// Increases score and coins on coin pickup.
+        /// </summary>
         public void OnCoinsPickedUp()
         {
             _score += 100;
@@ -132,6 +154,9 @@ namespace Entities.Gameplay
             _CoinsValueText.text = Mathf.RoundToInt(_coins).ToString();
         }
         
+        /// <summary>
+        /// Handles player colliding with an obstacles. Changes back to menu scene.
+        /// </summary>
         public void OnDeath()
         {
             _speedMultiplierIncreaseTween?.Kill();
@@ -150,6 +175,9 @@ namespace Entities.Gameplay
             }
         }
 
+        /// <summary>
+        /// Prepares to spawn next obstacle.
+        /// </summary>
         private void OnObstacleSpawned()
         {
             _runningSpawnRoutines.Remove(null);
@@ -159,6 +187,9 @@ namespace Entities.Gameplay
             }
         }
 
+        /// <summary>
+        /// Prepares to spawn next item.
+        /// </summary>
         private void OnItemSpawned()
         {
             _runningSpawnRoutines.Remove(null);
@@ -168,18 +199,27 @@ namespace Entities.Gameplay
             }
         }
 
+        /// <summary>
+        /// Schedules next obstacle spawn.
+        /// </summary>
         private void ScheduleObstacleSpawn(float duration, GameObject objectToSpawn, Transform parentTrack)
         {
             var coroutine = StartCoroutine(ObstacleSpawnRoutine(duration, objectToSpawn, parentTrack));
             _runningSpawnRoutines.Add(coroutine);
         }
 
+        /// <summary>
+        /// Schedules next item spawn.
+        /// </summary>
         private void ScheduleItemSpawn(float duration, GameObject objectToSpawn, Transform parentTrack)
         {
             var coroutine = StartCoroutine(ItemSpawnRoutine(duration, objectToSpawn, parentTrack));
             _runningSpawnRoutines.Add(coroutine);
         }
 
+        /// <summary>
+        /// Spawns and animates in new obstacle.
+        /// </summary>
         private IEnumerator ObstacleSpawnRoutine(float duration, GameObject objectToSpawn, Transform parentTrack)
         {
             yield return new WaitForSeconds(duration);
@@ -189,6 +229,9 @@ namespace Entities.Gameplay
             OnObstacleSpawned();
         }
 
+        /// <summary>
+        /// Spawns and animates in new item.
+        /// </summary>
         private IEnumerator ItemSpawnRoutine(float duration, GameObject objectToSpawn, Transform parentTrack)
         {
             yield return new WaitForSeconds(duration);
@@ -198,6 +241,9 @@ namespace Entities.Gameplay
             OnItemSpawned();
         }
 
+        /// <summary>
+        /// Spawns and animates in new gate.
+        /// </summary>
         private IEnumerator GateSpawnRoutine()
         {
             while (true)
@@ -209,6 +255,9 @@ namespace Entities.Gameplay
             }
         }
 
+        /// <summary>
+        /// Prepares setting for next obstacle spawn. Picks track to spawn in and prefab to spawn.
+        /// </summary>
         private bool TryGetObstacleSpawnConfig(out (GameObject objectToSpawn, Transform parentTrack) data)
         {
             data = (null, null);
@@ -221,6 +270,10 @@ namespace Entities.Gameplay
             _lastTrackIndex = trackIndex;
             return true;
         }
+        
+        /// <summary>
+        /// Prepares setting for next item spawn. Picks track to spawn in and prefab to spawn.
+        /// </summary>
         private bool TryGetItemSpawnConfig(out (GameObject objectToSpawn, Transform parentTrack) data)
         {
             data = (null, null);
@@ -234,6 +287,9 @@ namespace Entities.Gameplay
             return true;
         }
 
+        /// <summary>
+        /// Checks for new highscore, saves and updates database. Saves coins earned.
+        /// </summary>
         private void UpdatePlayerDataOnGameOver(float finalScore, int collectedCoins)
         {
             if (_playerDataManager.PlayerHighscore < finalScore)

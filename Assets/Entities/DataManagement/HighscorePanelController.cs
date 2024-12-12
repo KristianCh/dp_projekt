@@ -11,6 +11,9 @@ using UnityEngine;
 
 namespace Entities.DataManagement
 {
+    /// <summary>
+    /// Controller handling the highscore menu popup.
+    /// </summary>
     public class HighscorePanelController : PopupController
     {
         [SerializeField]
@@ -36,6 +39,9 @@ namespace Entities.DataManagement
             Task.Run(LoadHighscores);
         }
 
+        /// <summary>
+        /// Requests top players list from database handler. Updates player list on success, if setting scores routine is running triggers error.
+        /// </summary>
         private async UniTask LoadHighscores()
         {
             try
@@ -54,6 +60,9 @@ namespace Entities.DataManagement
             }
         }
 
+        /// <summary>
+        /// Waits until highscores are loaded from the database or until there's an error response. Updates highscore displays on success, displays error message on error.
+        /// </summary>
         private IEnumerator SetHighscores()
         {
             _HighscoreText.text = "Načítavanie...";

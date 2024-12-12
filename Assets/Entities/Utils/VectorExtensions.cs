@@ -2,6 +2,9 @@
 
 namespace Entities.Utils
 {
+    /// <summary>
+    /// Extensions to vectors.
+    /// </summary>
     public static class VectorExtensions
     {
 #region Casting

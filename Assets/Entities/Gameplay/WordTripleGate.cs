@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Entities.Gameplay
 {
+    /// <summary>
+    /// Controller handling rating gate behaviour.
+    /// </summary>
     public class WordTripleGate : WorldObjectMovementController
     {
         [SerializeField]
@@ -48,14 +51,20 @@ namespace Entities.Gameplay
         private DatabaseHandler _databaseHandler;
         private WordProcessingManager _wordProcessingManager;
 
+        
+        /// <summary>
+        /// Generates word to use.
+        /// </summary>
         private void Awake()
         {
             _databaseHandler = GameManager.GetService<DatabaseHandler>();
             _wordProcessingManager = GameManager.GetService<WordProcessingManager>();
             SetWordTriple(_wordProcessingManager.GetWordTriple());
-            _wordProcessingManager.IncrementRatedTimes(_currentTriple.MainWord);
         }
 
+        /// <summary>
+        /// Updates text scale based on distance.
+        /// </summary>
         public override void Update()
         {
             base.Update();
@@ -64,21 +73,27 @@ namespace Entities.Gameplay
             _TitleWord.canvas.transform.localScale = Vector3.one * scale;
         }
 
+        /// <summary>
+        /// Sets word displays.
+        /// </summary>
         private void SetWordTriple(WordTriple wordTriple)
         {
             _currentTriple = wordTriple;
 
             _isASelected = RandomUtils.RandomBool();
             
-            _TitleWord.text = NicifyWord(wordTriple.MainWord);
-            CurrentCorrectText.text = NicifyWord(wordTriple.PairWord);
-            CurrentIncorrectText.text = NicifyWord(wordTriple.IncorrectWord);
+            _TitleWord.text = _wordProcessingManager.NicifyWord(wordTriple.MainWord);
+            CurrentCorrectText.text = _wordProcessingManager.NicifyWord(wordTriple.PairWord);
+            CurrentIncorrectText.text = _wordProcessingManager.NicifyWord(wordTriple.IncorrectWord);
             
             _NeutralCollider.OnTriggerEnterEvent.AddOnce(OnNeutralGuess);
             CurrentCorrectCollider.OnTriggerEnterEvent.AddOnce(OnCorrectGuess);
             CurrentIncorrectCollider.OnTriggerEnterEvent.AddOnce(OnIncorrectGuess);
         }
 
+        /// <summary>
+        /// Handles correct guess.
+        /// </summary>
         private void OnCorrectGuess(Collider _)
         {
             _levelManager.IncrementCombo();
@@ -88,6 +103,9 @@ namespace Entities.Gameplay
             SendRating(_currentTriple.PairWord);
         }
 
+        /// <summary>
+        /// Handles incorrect guess.
+        /// </summary>
         private void OnIncorrectGuess(Collider _)
         {
             _levelManager.ResetCombo();
@@ -97,6 +115,9 @@ namespace Entities.Gameplay
             SendRating(_currentTriple.IncorrectWord);
         }
 
+        /// <summary>
+        /// Handles neutral guess.
+        /// </summary>
         private void OnNeutralGuess(Collider _)
         {
             _levelManager.DecrementCombo();
@@ -106,8 +127,12 @@ namespace Entities.Gameplay
             SendRating("");
         }
 
+        /// <summary>
+        /// Calls database handler to record rating and increments rated times.
+        /// </summary>
         private void SendRating(string answeredWord)
         {
+            _wordProcessingManager.IncrementRatedWeight(_currentTriple.MainWord);
             _databaseHandler.RecordGameRating
             (
                 _currentTriple.MainWord,
@@ -116,12 +141,6 @@ namespace Entities.Gameplay
                 _currentTriple.IncorrectWord,
                 _currentTriple.WordAOA
             );
-        }
-
-        private string NicifyWord(string word)
-        {
-            var newWord = word.Replace("_", " ");
-            return char.ToUpper(newWord[0]) + newWord[1..];
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Entities.DataManagement.Cosmetics;
 using Entities.GameManagement;
-using Entities.Gameplay.Prefabs;
 using Entities.Utils;
 using TMPro;
 using UnityEngine;
@@ -12,6 +11,9 @@ using UnityEngine.UI;
 
 namespace Entities.DataManagement
 {
+    /// <summary>
+    /// Controller handling the store menu popup.
+    /// </summary>
     public class StoreController : PopupController
     {
         [FormerlySerializedAs("_Root")]
@@ -54,17 +56,26 @@ namespace Entities.DataManagement
             UpdateCoins();
         }
 
+        /// <summary>
+        /// Updates coin display.
+        /// </summary>
         public void UpdateCoins()
         {
             _CoinsText.text = PlayerPrefs.GetInt("Coins").ToString();
         }
         
+        /// <summary>
+        /// Starts content population routine if not currently the displayed type.
+        /// </summary>
         private void PopulateContent(ItemTypes type)
         {
             if (currentItemType == type) return;
             StartCoroutine(PopulateContentRoutine(type));
         }
 
+        /// <summary>
+        /// Clears current store content. Adds store content of requested type.
+        /// </summary>
         private IEnumerator PopulateContentRoutine(ItemTypes type)
         {
             currentItemType = type;

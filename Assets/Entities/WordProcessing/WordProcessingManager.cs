@@ -8,41 +8,51 @@ using UnityEngine;
 
 namespace Entities.WordProcessing
 {
+    /// <summary>
+    /// Handles getting words to rate.
+    /// </summary>
     public class WordProcessingManager : MonoBehaviour, IService
     {
+        
+        /// <summary>
+        /// Entry for word data.
+        /// </summary>
         private class WordDataEntry
         {
             public string MainWord { get; set; }
             public float RecordedAoA { get; set; }
             public List<string> RelatedWords { get; set; }
-            public int RatedTimes { get; set; }
+            public int RatedWeight { get; set; }
 
             [UsedImplicitly]
             public bool Equals(WordDataEntry x, WordDataEntry y) => x.MainWord == y.MainWord;
             
-            public WordDataEntry(string mainWord, float recordedAoA, List<string> relatedWords, int ratedTimes = 0)
+            public WordDataEntry(string mainWord, float recordedAoA, List<string> relatedWords, int ratedWeight = 0)
             {
                 MainWord = mainWord;
                 RecordedAoA = recordedAoA;
                 RelatedWords = relatedWords;
-                RatedTimes = ratedTimes;
+                RatedWeight = ratedWeight;
             }
 
-            public void IncrementRatedTimes()
+            /// <summary>
+            /// Increases rated weight amount.
+            /// </summary>
+            public void IncrementRatedWeight()
             {
-                SetRatedTimes(RatedTimes + 5);
+                SetRatedWeight(RatedWeight + 5);
             }
 
-            public void SetRatedTimes(int ratedTimes)
+            /// <summary>
+            /// Sets rated weight amount.
+            /// </summary>
+            public void SetRatedWeight(int ratedWeight)
             {
-                RatedTimes = ratedTimes;
-                PlayerPrefs.SetInt(MainWord + "RatedTimes", RatedTimes);
+                RatedWeight = ratedWeight;
+                PlayerPrefs.SetInt(MainWord + "RatedTimes", RatedWeight);
                 PlayerPrefs.Save();
             }
         }
-        
-        [SerializeField]
-        private string _WordDataFilePath = "Assets/Entities/DataManagement/WordData.csv";
         
         [SerializeField]
         private char _MainSeparator = ';';
@@ -661,13 +671,17 @@ namespace Entities.WordProcessing
             "teleso"
         };
         
+        
+        /// <summary>
+        /// Prepares word data.
+        /// </summary>
         public void Start()
         {
             GameManager.AddService(this);
 
             foreach (var line in _unparsedRelatedWords)
             {
-                var result = CsvReader.ParseLine(line, _MainSeparator);
+                var result = ParseLine(line, _MainSeparator);
                 var aoa = float.Parse(result[1], CultureInfo.InvariantCulture.NumberFormat);
                 var relatedWords = result[2].Split(_RelatedWordsSeparator).ToList();
                 var ratedTimes= PlayerPrefs.GetInt(result[0] + "RatedTimes", 0);
@@ -676,10 +690,13 @@ namespace Entities.WordProcessing
             }      
         }
 
+        /// <summary>
+        /// Get word triple from data.
+        /// </summary>
         public WordTriple GetWordTriple()
         {
-            var maxRatedTimes = _relatedWordData.Max(r => r.RatedTimes);
-            var mainWordData = RandomUtils.WeightedRandomFromList(_relatedWordData, i => Mathf.Max(maxRatedTimes - i.RatedTimes, 1));
+            var maxRatedWeight = _relatedWordData.Max(r => r.RatedWeight);
+            var mainWordData = RandomUtils.WeightedRandomFromList(_relatedWordData, i => Mathf.Max(maxRatedWeight - i.RatedWeight, 1));
             var incorrectWord = RandomUtils.RandomFromList(_unrelatedWords);
             return new WordTriple
             (
@@ -690,26 +707,42 @@ namespace Entities.WordProcessing
             );
         }
 
+        /// <summary>
+        /// Capitalizes word and replaces any underscores with spaces.
+        /// </summary>
         public string NicifyWord(string word)
         {
             var newWord = word.Replace("_", " ");
             return char.ToUpper(newWord[0]) + newWord[1..];
         }
         
-
-        public void IncrementRatedTimes(string mainWord)
+        /// <summary>
+        /// Increases rated weight amount for word. If minimal weight is more than zero, reduces all weights by the minimum weight.
+        /// </summary>
+        public void IncrementRatedWeight(string mainWord)
         {
             var mainWordData = _relatedWordData.Find(r => r.MainWord == mainWord);
-            mainWordData.IncrementRatedTimes();
+            mainWordData.IncrementRatedWeight();
 
-            var floor = _relatedWordData.Min(r => r.RatedTimes);
+            var floor = _relatedWordData.Min(r => r.RatedWeight);
             if (floor > 0)
             {
                 foreach (var item in _relatedWordData)
                 {
-                    item.SetRatedTimes(item.RatedTimes - floor);
+                    item.SetRatedWeight(item.RatedWeight - floor);
                 }
             }
+        }
+        
+        /// <summary>
+        /// Parses a line of data into a list of its parts.
+        /// </summary>
+        private static string[] ParseLine(string line, char separator)
+        {
+            if (line == null)
+                return new string[] {};
+            var lineValues = line.Split(separator);
+            return lineValues;
         }
     }
 }

@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Entities.GameManagement
 {
+    /// <summary>
+    /// Manager handling game initialization, preparing services and supporting service location.
+    /// </summary>
     public class GameManager : MonoBehaviour
     {
         [SerializeField]
@@ -39,6 +42,9 @@ namespace Entities.GameManagement
             StartCoroutine(LoadCoroutine());
         }
 
+        /// <summary>
+        /// Gets service of type T if present.
+        /// </summary>
         public static T GetService<T>() where T : class, IService
         {
             if (Instance._services.TryGetValue(typeof(T), out var service))
@@ -46,12 +52,18 @@ namespace Entities.GameManagement
             return null;
         }
 
+        /// <summary>
+        /// Tries getting service of type T, returns success.
+        /// </summary>
         public static bool TryGetService<T>(out T service) where T : class, IService
         {
             service = GetService<T>();
             return service != null;
         }
 
+        /// <summary>
+        /// Adds service of type T if not present.
+        /// </summary>
         public static void AddService<T>(T service) where T : class, IService
         {
             if (Instance._services.ContainsKey(typeof(T)))
@@ -62,6 +74,9 @@ namespace Entities.GameManagement
             Instance._services.Add(typeof(T), service);
         }
 
+        /// <summary>
+        /// Removes service of type T if present.
+        /// </summary>
         public static void RemoveService<T>() where T : class, IService
         {
             if (!Instance._services.ContainsKey(typeof(T)))
@@ -72,6 +87,9 @@ namespace Entities.GameManagement
             Instance._services.Remove(typeof(T));
         }
 
+        /// <summary>
+        /// Instantiates prefabs specified in loading data. Should be used for spawning service monobehaviours that should be present from the start of the game. 
+        /// </summary>
         private IEnumerator LoadCoroutine()
         {
             if (_LoadingData == null)
@@ -88,6 +106,9 @@ namespace Entities.GameManagement
             LoadCompletedSignal.Dispatch();
         }
 
+        /// <summary>
+        /// Initializes PlayerPref variables that should be always be present.
+        /// </summary>
         private void InitializePlayerPrefs()
         {
             if (!PlayerPrefs.HasKey("PlayerGUID"))

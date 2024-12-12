@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Entities.Gameplay
 {
+    /// <summary>
+    /// ScriptableObject containing settings for level values.
+    /// </summary>
     [CreateAssetMenu(fileName = "LevelDefinition", menuName = "LevelDefinition", order = 0)]
     public class LevelDefinition : ScriptableObject
     {

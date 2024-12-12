@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Entities.Gameplay
 {
+    /// <summary>
+    /// ScriptableObject defining player movement speeds and swiping parameters.
+    /// </summary>
     [CreateAssetMenu(fileName = "PlayerMovementSettings", menuName = "PlayerMovementSettings", order = 0)]
     public class PlayerMovementSettings : ScriptableObject
     {

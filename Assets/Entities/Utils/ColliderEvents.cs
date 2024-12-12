@@ -4,6 +4,10 @@ using UnityEngine;
 
 namespace Entities.Utils
 {
+    
+    /// <summary>
+    /// Passes collider events from any collider to listeners. Enables listening to collision events in scripts not on same game object
+    /// </summary>
     public class ColliderEvents : MonoBehaviour
     {
         [Required]

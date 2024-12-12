@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Entities.DataManagement
 {
+    /// <summary>
+    /// Highscore entry display in the highscore menu.
+    /// </summary>
     public class HighscoreItem : MonoBehaviour
     {
         [SerializeField] 
@@ -11,6 +14,9 @@ namespace Entities.DataManagement
         [SerializeField]
         private TMP_Text _ScoreText;
 
+        /// <summary>
+        /// Updates UI.
+        /// </summary>
         public void SetData(int position, string nickname, float score, bool isPlayer)
         {
             _NickText.text = position + ". " + nickname + ":";

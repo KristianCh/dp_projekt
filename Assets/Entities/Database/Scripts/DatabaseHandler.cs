@@ -1,17 +1,18 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
-using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Entities.Database;
 using Entities.GameManagement;
 
+/// <summary>
+/// Handles connecting, disconnecting, writing and reading to the database.
+/// </summary>
 public class DatabaseHandler : MonoBehaviour, IService
 {
 	[SerializeField]
@@ -68,7 +69,10 @@ public class DatabaseHandler : MonoBehaviour, IService
 		_playerDataManager = GameManager.GetService<PlayerDataManager>();
 		Task.Run(Initialize);
 	}
-
+	
+	/// <summary>
+	/// Connects to the database and records player data. If connection fails, keeps retrying every 5 seconds.
+	/// </summary>
 	private async UniTask Initialize()
 	{
 		con = new SqlConnection(ConString);
@@ -110,13 +114,19 @@ public class DatabaseHandler : MonoBehaviour, IService
 		if (con == null) return ConnectionState.Closed;
 		return con.State;
 	}
-
+	
+	/// <summary>
+	/// Starts task to record a game rating entry.
+	/// </summary>
 	public async void RecordGameRating(string ratedWord, string answeredWord, string correctWord, string incorrectWord,
 		float wordAoA)
 	{
 		await Task.Run(() => RecordGameRatingInternal(ratedWord, answeredWord, correctWord, incorrectWord, wordAoA));
 	}
 
+	/// <summary>
+	/// Executes insertion of a game rating entry into the database.
+	/// </summary>
 	public async UniTask RecordGameRatingInternal(string ratedWord, string answeredWord, string correctWord, string incorrectWord, float wordAoA)
 	{
 		var playerGuid = _playerDataManager.PlayerGuid;
@@ -126,12 +136,18 @@ public class DatabaseHandler : MonoBehaviour, IService
 		Cmd.CommandText = cmdText;
 		await Cmd.ExecuteNonQueryAsync();
 	}
-
+	
+	/// <summary>
+	/// Starts task to record a manual rating entry.
+	/// </summary>
 	public async void RecordManualRating(string ratedWord, float wordAoA, int playerRatedAge)
 	{
 		await Task.Run(() => RecordManualRatingInternal(ratedWord, wordAoA, playerRatedAge));
 	}
 	
+	/// <summary>
+	/// Executes insertion of a manual rating entry into the database.
+	/// </summary>
 	private async UniTask RecordManualRatingInternal(string ratedWord, float wordAoA, int playerRatedAge)
 	{
 		var playerGuid = _playerDataManager.PlayerGuid;
@@ -141,12 +157,18 @@ public class DatabaseHandler : MonoBehaviour, IService
 		Cmd.CommandText = cmdText;
 		await Cmd.ExecuteNonQueryAsync();
 	}
-
+	
+	/// <summary>
+	/// Starts task to record a manual rating entry.
+	/// </summary>
 	public async void RecordPlayerData()
 	{ 
-		await RecordPlayerDataInternal();
+		await Task.Run(RecordPlayerDataInternal);
 	}
 
+	/// <summary>
+	/// Executes update of player data in the database.
+	/// </summary>
 	private async UniTask RecordPlayerDataInternal()
 	{
 		var playerGuid = _playerDataManager.PlayerGuid;
@@ -162,6 +184,12 @@ public class DatabaseHandler : MonoBehaviour, IService
 		await Cmd.ExecuteNonQueryAsync();
 	}
 
+	/// <summary>
+	/// Gets up to 10 players with the highest highscores ordered from highest to lowest.
+	/// </summary>
+	/// <returns>
+	/// List of up to 10 (string guid, string nick, float highscore) tuples with data of top players.
+	/// </returns>
 	public async UniTask<List<(string guid, string nick, float highscore)>> GetTopPlayers()
 	{
 		Cmd.CommandText = "SELECT TOP 10 * FROM Players ORDER BY Highscore DESC";
@@ -182,6 +210,13 @@ public class DatabaseHandler : MonoBehaviour, IService
 		return players;
 	}
 
+	/// <summary>
+	/// Checks if current PlayerGUID is already present in the database. Get Primary Key if it is and saves it locally.
+	/// Caches bool of wether the PlayerGUID is in the database. If it is already cached, just returns cache at start.
+	/// </summary>
+	/// /// <returns>
+	/// Bool wether the PlayerGUID is in the database.
+	/// </returns>
 	private async UniTask<bool> CheckPlayerExists()
 	{
 		if (_playerExistsCache) return true;

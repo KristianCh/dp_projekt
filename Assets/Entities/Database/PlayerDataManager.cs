@@ -1,10 +1,12 @@
-using System;
 using Entities.Events;
 using Entities.GameManagement;
 using UnityEngine;
 
 namespace Entities.Database
 {
+    /// <summary>
+    /// Handles updating and saving player data to PlayerPrefs and dispatching signals on data updates.
+    /// </summary>
     public class PlayerDataManager : MonoBehaviour, IService
     {
         public Signal<string> PlayerGuidChanged = new();
@@ -89,7 +91,10 @@ namespace Entities.Database
             PlayerHighscore = PlayerPrefs.GetFloat("HighScore");
             PlayerAge = PlayerPrefs.GetInt("Age");
         }
-
+        
+        /// <summary>
+        /// Player data is often changed from Tasks, from which we cannot call PlayerPrefs functions. Checks wether any have changed and saves them.
+        /// </summary>
         private void Update()
         {
             if (_hasPlayerGuidChanged)

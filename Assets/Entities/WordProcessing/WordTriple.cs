@@ -1,5 +1,8 @@
 ﻿namespace Entities.WordProcessing
 {
+    /// <summary>
+    /// Class including correct word, incorrect word, pair word and the recorded AoA of the main word.
+    /// </summary>
     public class WordTriple
     {
         public string MainWord { get; set; }

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Entities.Utils
 {
+    /// <summary>
+    /// Maps string to color for use in store.
+    /// </summary>
     public static class ColorMapper
     {
         public static readonly Dictionary<string, Color> ColorMap = new Dictionary<string, Color>

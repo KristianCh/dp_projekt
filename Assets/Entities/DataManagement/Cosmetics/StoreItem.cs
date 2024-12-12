@@ -15,6 +15,9 @@ namespace Entities.DataManagement.Cosmetics
         ParticleEffect = 3,
     }
     
+    /// <summary>
+    /// Contains data about player store items.
+    /// </summary>
     [Serializable]
     public class StoreItem
     {

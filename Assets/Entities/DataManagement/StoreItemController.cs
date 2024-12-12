@@ -9,6 +9,9 @@ using UnityEngine.UI;
 
 namespace Entities.DataManagement
 {
+    /// <summary>
+    /// Controller for individual store items.
+    /// </summary>
     public class StoreItemController : MonoBehaviour
     {
         [SerializeField]
@@ -37,6 +40,9 @@ namespace Entities.DataManagement
 
         private static event Action ItemEquipped;
 
+        /// <summary>
+        /// Sets up displayed content, size of item and button listener.
+        /// </summary>
         internal void Initialize(StoreController storeController, StoreItem item, float width)
         {
             _storeController = storeController;
@@ -73,6 +79,9 @@ namespace Entities.DataManagement
             ItemEquipped -= OnItemEquipped;
         }
 
+        /// <summary>
+        /// Handles button click. If owned, equips item. If not owned and player has enough coins, purchases item and equps it. Otherwise animates to indicate not enough coins.
+        /// </summary>
         private void OnButtonClick()
         {
             if (!_item.IsPurchased)
@@ -106,6 +115,9 @@ namespace Entities.DataManagement
             _PurchasedPanel.gameObject.SetActive(_item.IsPurchased);
         }
 
+        /// <summary>
+        /// Updates display to equiped state.
+        /// </summary>
         private void OnItemEquipped()
         {
             if (_EquippedImage == null) return;

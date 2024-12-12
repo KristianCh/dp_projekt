@@ -8,6 +8,9 @@ using UnityEngine.UI;
 
 namespace Entities.Gameplay
 {
+    /// <summary>
+    /// Controller handling button presses in the main menu.
+    /// </summary>
     public class MenuScreenController : MonoBehaviour
     {
         [FormerlySerializedAs("_Button")]
@@ -54,6 +57,9 @@ namespace Entities.Gameplay
             _HighScoreText.text = "Vysoké Skóre: " + Mathf.RoundToInt(PlayerPrefs.GetFloat("HighScore"));
         }
 
+        /// <summary>
+        /// Opens unclosable age prompt if the age has not been set yet.
+        /// </summary>
         public void Start()
         {
             if (!PlayerPrefs.HasKey("Age"))
@@ -62,13 +68,22 @@ namespace Entities.Gameplay
                 UpdateAgeDisplay();
         }
 
+        /// <summary>
+        /// Starts game.
+        /// </summary>
         private void StartGame()
         {
             SceneManager.LoadScene("MainScene");
         }
-
+        
+        /// <summary>
+        /// Opens age prompt from button press.
+        /// </summary>
         private void ShowAgePrompt() => ShowAgePrompt(true);
 
+        /// <summary>
+        /// Opens age prompt.
+        /// </summary>
         private void ShowAgePrompt(bool cancelable)
         { 
             if (_isPromptOpen) return;
@@ -80,6 +95,9 @@ namespace Entities.Gameplay
             prompt.OnPopupClosed.AddOnce(() => _isPromptOpen = false);
         }
 
+        /// <summary>
+        /// Opens manual rate popup.
+        /// </summary>
         private void ShowRatePrompt()
         { 
             if (_isPromptOpen) return;
@@ -89,6 +107,9 @@ namespace Entities.Gameplay
             prompt.OnPopupClosed.AddOnce(() => _isPromptOpen = false);
         }
 
+        /// <summary>
+        /// Opens store popup.
+        /// </summary>
         private void ShowStore()
         {
             if (_isPromptOpen) return;
@@ -98,6 +119,9 @@ namespace Entities.Gameplay
             prompt.OnPopupClosed.AddOnce(() => _isPromptOpen = false);
         }
 
+        /// <summary>
+        /// Opens leaderboard popup.
+        /// </summary>
         private void ShowLeaderboard()
         {
             if (_isPromptOpen) return;
@@ -107,6 +131,9 @@ namespace Entities.Gameplay
             prompt.OnPopupClosed.AddOnce(() => _isPromptOpen = false);
         }
 
+        /// <summary>
+        /// Updates player age and nickname in display.
+        /// </summary>
         private void UpdateAgeDisplay()
         {
             var text = _SetAgeButton.GetComponentInChildren<TMP_Text>();

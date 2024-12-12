@@ -8,6 +8,9 @@ using UnityEngine.UI;
 
 namespace Entities.DataManagement
 {
+    /// <summary>
+    /// Controller handling the age prompt menu popup.
+    /// </summary>
     public class AgePromptController : PopupController
     {
 
@@ -44,7 +47,10 @@ namespace Entities.DataManagement
             base.ClosePopup();
             _SubmitButton.onClick.RemoveAllListeners();
         }
-
+        
+        /// <summary>
+        /// Handles checking data for correct values and displaying an error message in case it is incorrect. Calls database handler to update player data.
+        /// </summary>
         private void OnSubmit()
         {
             if (int.TryParse(_AgeInputField.text, out var value) && value <= 100 && value >= 1)
@@ -61,7 +67,10 @@ namespace Entities.DataManagement
             else 
                 DisplayError();
         }
-
+        
+        /// <summary>
+        /// Shows and animates error message.
+        /// </summary>
         private void DisplayError()
         {
             _ErrorText.gameObject.SetActive(true);

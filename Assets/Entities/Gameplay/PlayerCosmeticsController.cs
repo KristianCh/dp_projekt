@@ -1,12 +1,15 @@
 using System;
+using Entities.DataManagement;
 using Entities.DataManagement.Cosmetics;
 using Entities.GameManagement;
-using Entities.Gameplay.Prefabs;
 using Entities.Utils;
 using UnityEngine;
 
 namespace Entities.Gameplay
 {
+    /// <summary>
+    /// Controller applying cosmetics to player object in game.
+    /// </summary>
     public class PlayerCosmeticsController : MonoBehaviour
     {
         [SerializeField]
@@ -17,6 +20,9 @@ namespace Entities.Gameplay
         
         private StoreContentManager _storeContentManager;
         
+        /// <summary>
+        /// Sets player cosmetics.
+        /// </summary>
         private void Awake()
         {
             _storeContentManager = GameManager.GetService<StoreContentManager>();

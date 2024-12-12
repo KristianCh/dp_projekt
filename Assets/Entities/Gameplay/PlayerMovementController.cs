@@ -10,6 +10,9 @@ using UnityEngine.EventSystems;
 
 namespace Entities.Gameplay
 {
+    /// <summary>
+    /// Controller handling player inputs.
+    /// </summary>
     public class PlayerMovementController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         public enum Quadrant
@@ -65,6 +68,10 @@ namespace Entities.Gameplay
         private LevelManager _levelManager;
         private LevelManager LevelManager => _levelManager ??= GameManager.GetService<LevelManager>();
 
+        
+        /// <summary>
+        /// Updates camera and resetting rotation.
+        /// </summary>
         private void Update()
         {
             var zRot = _playerTransform.rotation.eulerAngles.z < 180 ? _playerTransform.rotation.eulerAngles.z : _playerTransform.rotation.eulerAngles.z - 360f;
@@ -75,12 +82,18 @@ namespace Entities.Gameplay
             _Camera.transform.localPosition = _Camera.transform.localPosition.WithX(_playerTransform.localPosition.x / 2f);
         }
 
+        /// <summary>
+        /// Register on pointer down event.
+        /// </summary>
         public void OnPointerDown(PointerEventData eventData)
         {
             _downPosition = eventData.position;
             _downTime = DateTime.Now;
         }
-
+        
+        /// <summary>
+        /// Register pointer up event. Checks swipe time and distance to validate swipe. If swipe is valid, gets quadrant and handles movement.
+        /// </summary>
         public void OnPointerUp(PointerEventData eventData)
         {
             _upPosition = eventData.position;
@@ -97,6 +110,10 @@ namespace Entities.Gameplay
             HandleMovement(quadrant);
         }
 
+        
+        /// <summary>
+        /// Gets quadrant (direction) of the swipe.
+        /// </summary>
         private Quadrant GetQuadrant(Vector2 swipeVector)
         {
             if (swipeVector.sqrMagnitude == 0) return Quadrant.Undefined;
@@ -106,6 +123,9 @@ namespace Entities.Gameplay
             return swipeVector.y > 0 ? Quadrant.North : Quadrant.South;
         }
 
+        /// <summary>
+        /// Handles switching lanes, jumping or falling based on quadrant.
+        /// </summary>
         private void HandleMovement(Quadrant quadrant)
         {
             switch (quadrant)
@@ -176,13 +196,14 @@ namespace Entities.Gameplay
                 _playerTransform.position = _playerTransform.position.WithY(_baseY);
                 StopCoroutine(_jumpRoutine);
                 _jumpRoutine = null;
-                //_slideRoutine = StartCoroutine(SlideRoutine());
             }
         }
 
+        /// <summary>
+        /// Handles player movement between lanes.
+        /// </summary>
         private IEnumerator MoveRoutine()
         {
-            //yield return new WaitForSeconds(_MovementSettings.MoveDuration);
             _playerTransform.DOMoveX(_currentLaneTransform.position.x, _MovementSettings.MoveDuration).SetEase(_MovementSettings.MoveEase);
             _playerTransform.DOShakeRotation(_MovementSettings.MoveDuration, Vector3.forward * 20, 1);
 
@@ -190,9 +211,11 @@ namespace Entities.Gameplay
             yield break;
         }
 
+        /// <summary>
+        /// Handles jumping animation.
+        /// </summary>
         private IEnumerator JumpRoutine()
         {
-            //yield return new WaitForSeconds(_MovementSettings.JumpDuration);
             var elapsedTime = 0f;
             _baseY = _playerTransform.position.y;
             while (elapsedTime < _MovementSettings.JumpDuration)

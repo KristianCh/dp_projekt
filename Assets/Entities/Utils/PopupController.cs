@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 namespace Entities.Utils
 {
+    /// <summary>
+    /// Controls basic popup opening and closing.
+    /// </summary>
     public class PopupController : MonoBehaviour
     {
         [SerializeField]
@@ -24,16 +27,25 @@ namespace Entities.Utils
             _CancelButton.onClick.AddListener(ClosePopup);
         }
 
+        /// <summary>
+        /// Plays opening animation.
+        /// </summary>
         protected virtual void Start()
         {
             AnimateIn();
         }
 
+        /// <summary>
+        /// Sets if player can close the popup with the X button.
+        /// </summary>
         public void SetCancelable(bool cancelable)
         {
             _CancelButton.gameObject.SetActive(cancelable);
         }
 
+        /// <summary>
+        /// Plays closing animation and destroys popup.
+        /// </summary>
         protected virtual void ClosePopup()
         {
             _CancelButton.onClick.RemoveAllListeners();
@@ -41,6 +53,9 @@ namespace Entities.Utils
             AnimateOut();
         }
 
+        /// <summary>
+        /// Opening animation.
+        /// </summary>
         protected virtual void AnimateIn()
         {
             OnPopupOpening.Dispatch();
@@ -48,6 +63,9 @@ namespace Entities.Utils
             _Root.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack).OnComplete(() => OnPopupOpened.Dispatch());
         }
 
+        /// <summary>
+        /// Closing animation.
+        /// </summary>
         protected virtual void AnimateOut()
         {
             OnPopupClosing.Dispatch();

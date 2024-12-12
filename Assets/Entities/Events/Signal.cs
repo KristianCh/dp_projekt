@@ -1,15 +1,14 @@
-﻿// // Author: Kristián Chovančák
-// // Created: 21.07.2023
-// // Copyright (c) Noxgames
-// // http://www.noxgames.com/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Entities.Events
 {
-        public class Signal : ASignal
+    
+    /// <summary>
+    /// Signal class without parameters.
+    /// </summary>
+    public class Signal : ASignal
     {
         public event Action Listener = null;
         public event Action OnceListener = null;
@@ -63,6 +62,9 @@ namespace Entities.Events
         public Delegate listener { get { return Listener ?? (Listener = delegate { }); } set { Listener = (Action) value; } }
     }
 
+    /// <summary>
+    /// Signal class with one generic parameter.
+    /// </summary>
     public class Signal<T> : ASignal
     {
         public event Action<T> Listener = null;

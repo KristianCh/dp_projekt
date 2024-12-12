@@ -8,6 +8,9 @@ using UnityEngine.UI;
 
 namespace Entities.DataManagement
 {
+    /// <summary>
+    /// Controller handling the rate prompt menu popup.
+    /// </summary>
     public class RatePromptController : PopupController
     {
         [Header("RatePanel")]
@@ -69,6 +72,9 @@ namespace Entities.DataManagement
             _SubmitButton.onClick.RemoveAllListeners();
         }
 
+        /// <summary>
+        /// Gets word to rate from the word processing manager and updates displays.
+        /// </summary>
         private void SetWord()
         {
             _worldTriple = _wordProcessingManager.GetWordTriple();
@@ -76,11 +82,14 @@ namespace Entities.DataManagement
             _ErrorText.gameObject.SetActive(false);
         }
 
+        /// <summary>
+        /// Validates data, calls database handler to write to the database and displays reward screen. Displays error message if data wasn't validated.
+        /// </summary>
         private void OnSubmit()
         {
             if (int.TryParse(_InputField.text, out var value) && value <= 100)
             {
-                _wordProcessingManager.IncrementRatedTimes(_worldTriple.MainWord);
+                _wordProcessingManager.IncrementRatedWeight(_worldTriple.MainWord);
                 _databaseHandler.RecordManualRating(_worldTriple.MainWord, _worldTriple.WordAOA, value);
 				
                 var currentCoins = PlayerPrefs.GetInt("Coins");
@@ -96,9 +105,12 @@ namespace Entities.DataManagement
                 DisplayError();
         }
 
+        /// <summary>
+        /// Handles submitting don't know response.
+        /// </summary>
         private void OnDontKnowSubmit()
         {
-            _wordProcessingManager.IncrementRatedTimes(_worldTriple.MainWord);
+            _wordProcessingManager.IncrementRatedWeight(_worldTriple.MainWord);
             _databaseHandler.RecordManualRating(_worldTriple.MainWord, _worldTriple.WordAOA, -1);
 			
             var currentCoins = PlayerPrefs.GetInt("Coins");
@@ -110,13 +122,19 @@ namespace Entities.DataManagement
             _ErrorText.gameObject.SetActive(false);
             _InputField.text = "";
         }
-
+        
+        /// <summary>
+        /// Shows and animates error message.
+        /// </summary>
         private void DisplayError()
         {
             _ErrorText.gameObject.SetActive(true);
             _ErrorText.transform.DOShakeRotation(0.1f, 10f);
         }
-
+        
+        /// <summary>
+        /// Resets UI to rate state from rewards screen.
+        /// </summary>
         private void OnRateAnother()
         {
 			SetWord();
